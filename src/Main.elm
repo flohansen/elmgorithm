@@ -1,8 +1,11 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, div, p, text)
+import Color
+import Html exposing (Html, div, li, p, span, text, ul)
 import Html.Attributes exposing (style)
+import Material.Icons as Filled exposing (sort)
+import Material.Icons.Types exposing (Coloring(..))
 
 
 classApp : List (Html.Attribute msg)
@@ -73,8 +76,11 @@ classTypoHeader =
 
 classTypoBody : List (Html.Attribute msg)
 classTypoBody =
-    [ style "font-weight" "700"
-    ]
+    classTypo
+        ++ [ style "font-weight" "400"
+           , style "font-size" "16px"
+           , style "color" "#ffffff"
+           ]
 
 
 classTypoLabel : List (Html.Attribute msg)
@@ -92,6 +98,26 @@ classTypoButton =
 classTypoCaption : List (Html.Attribute msg)
 classTypoCaption =
     [ style "font-weight" "700"
+    ]
+
+
+classMenu : List (Html.Attribute msg)
+classMenu =
+    [ style "list-style" "none"
+    , style "padding" "0"
+    ]
+
+
+classMenuItem : List (Html.Attribute msg)
+classMenuItem =
+    [ style "display" "flex"
+    , style "align-items" "center"
+    ]
+
+
+classMenuItemIcon : List (Html.Attribute msg)
+classMenuItemIcon =
+    [ style "margin-right" "24px"
     ]
 
 
@@ -178,6 +204,12 @@ view model =
             ]
         , div (classDrawer model)
             [ typography Header model.appInfo.name
+            , ul classMenu
+                [ li classMenuItem
+                    [ span classMenuItemIcon [ Filled.sort 24 (Color <| Color.rgb 255 255 255) ]
+                    , typography Body "Sortieralgorithmen"
+                    ]
+                ]
             ]
         , div (classDrawerSettings model) []
         ]
