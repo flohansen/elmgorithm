@@ -2,8 +2,9 @@ module Main exposing (..)
 
 import Browser
 import Color
-import Html exposing (Html, div, li, p, span, text, ul)
-import Html.Attributes exposing (style)
+import Html exposing (Html, a, button, div, li, p, span, text, ul)
+import Html.Attributes exposing (href, style)
+import Html.Events exposing (onClick)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 
@@ -105,6 +106,7 @@ classMenu : List (Html.Attribute msg)
 classMenu =
     [ style "list-style" "none"
     , style "padding" "0"
+    , style "margin-top" "64px"
     ]
 
 
@@ -112,6 +114,11 @@ classMenuItem : List (Html.Attribute msg)
 classMenuItem =
     [ style "display" "flex"
     , style "align-items" "center"
+    , style "background" "transparent"
+    , style "border" "none"
+    , style "outline" "none"
+    , style "cursor" "pointer"
+    , style "width" "100%"
     ]
 
 
@@ -150,6 +157,7 @@ type TypographyType
 
 type Msg
     = None
+    | Navigate Menu
 
 
 type Menu
@@ -205,9 +213,14 @@ view model =
         , div (classDrawer model)
             [ typography Header model.appInfo.name
             , ul classMenu
-                [ li classMenuItem
-                    [ span classMenuItemIcon [ Filled.sort 24 (Color <| Color.rgb 255 255 255) ]
-                    , typography Body "Sortieralgorithmen"
+                [ li []
+                    [ button
+                        (onClick (Navigate Sort)
+                            :: classMenuItem
+                        )
+                        [ span classMenuItemIcon [ Filled.sort 24 (Color <| Color.rgb 255 255 255) ]
+                        , typography Body "Sortieralgorithmen"
+                        ]
                     ]
                 ]
             ]
@@ -219,6 +232,9 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         None ->
+            ( model, Cmd.none )
+
+        Navigate Sort ->
             ( model, Cmd.none )
 
 
