@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Color
-import Html exposing (Html, a, button, div, input, li, p, span, text, ul)
+import Html exposing (Html, a, button, div, input, li, p, select, span, text, ul)
 import Html.Attributes exposing (href, style)
 import Html.Events exposing (onClick)
 import Material.Icons as Filled exposing (sort)
@@ -63,22 +63,46 @@ classDrawerSettings model =
 classRow : List (Html.Attribute msg)
 classRow =
     [ style "display" "flex"
+    , style "flex-shrink" "1"
     , style "align-items" "center"
     , style "width" "100%"
+    , style "margin-bottom" "16px"
     ]
 
 
 classRowData : List (Html.Attribute msg)
 classRowData =
     [ style "flex-grow" "1"
+    , style "min-width" "0"
+    , style "border" "0"
+    , style "background" "rgba(255, 255, 255, 0.15)"
+    , style "border-radius" "3px"
+    , style "padding" "5px 7px"
+    , style "font-size" "14px"
+    , style "color" "#fff"
+    , style "letter-spacing" "0.04em"
+    ]
+
+
+classButton : List (Html.Attribute msg)
+classButton =
+    [ style "display" "block"
+    , style "width" "100%"
+    , style "border-radius" "3px"
+    , style "border" "0"
+    , style "padding" "7px 0"
+    , style "outline" "none"
+    , style "cursor" "pointer"
+    , style "color" "#fff"
+    , style "background" "#DC2865"
     ]
 
 
 classContent : Model -> List (Html.Attribute msg)
 classContent model =
     [ style "width" ("calc(100vw - " ++ String.fromInt (model.appInfo.drawerWidth + model.appInfo.drawerSettingsWidth) ++ "px)")
-    , style "height" ("calc(100vh - " ++ String.fromInt model.appInfo.appBarHeight ++ "px)")
-    , style "margin-top" (String.fromInt model.appInfo.appBarHeight ++ "px")
+    , style "height" "100vh"
+    , style "padding-top" (String.fromInt model.appInfo.appBarHeight ++ "px")
     , style "margin-left" (String.fromInt model.appInfo.drawerWidth ++ "px")
     , style "box-sizing" "border-box"
     ]
@@ -112,20 +136,34 @@ classTypoBody =
 
 classTypoLabel : List (Html.Attribute msg)
 classTypoLabel =
-    [ style "font-weight" "700"
-    ]
+    classTypo
+        ++ [ style "flex" "0 1 auto"
+           , style "margin-right" "16px"
+           , style "font-size" "16px"
+           , style "color" "#A7A7A7"
+           , style "letter-spacing" "0.04em"
+           ]
 
 
 classTypoButton : List (Html.Attribute msg)
 classTypoButton =
-    [ style "font-weight" "700"
-    ]
+    classTypo
+        ++ [ style "font-weight" "700"
+           , style "font-size" "12px"
+           , style "letter-spacing" "0.18em"
+           , style "text-transform" "uppercase"
+           ]
 
 
 classTypoCaption : List (Html.Attribute msg)
 classTypoCaption =
-    [ style "font-weight" "700"
-    ]
+    classTypo
+        ++ [ style "font-size" "12px"
+           , style "letter-spacing" "0.18em"
+           , style "text-transform" "uppercase"
+           , style "color" "#fff"
+           , style "margin-bottom" "24px"
+           ]
 
 
 classMenu : List (Html.Attribute msg)
@@ -235,9 +273,14 @@ sortingSettingsView model =
     div []
         [ typography Caption "Einstellungen"
         , div classRow
-            [ typography Label "Alorithmus:"
+            [ typography Label "Algorithmus"
+            , select classRowData []
+            ]
+        , div classRow
+            [ typography Label "Elemente"
             , input classRowData []
             ]
+        , button classButton [ typography Button "Neue Werte" ]
         ]
 
 
