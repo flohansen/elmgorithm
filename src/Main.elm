@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Color
-import Html exposing (Html, a, button, div, li, p, span, text, ul)
+import Html exposing (Html, a, button, div, input, li, p, span, text, ul)
 import Html.Attributes exposing (href, style)
 import Html.Events exposing (onClick)
 import Material.Icons as Filled exposing (sort)
@@ -55,6 +55,32 @@ classDrawerSettings model =
     , style "top" "0"
     , style "right" "0"
     , style "margin-top" (String.fromInt model.appInfo.appBarHeight ++ "px")
+    , style "padding" "24px"
+    , style "box-sizing" "border-box"
+    ]
+
+
+classRow : List (Html.Attribute msg)
+classRow =
+    [ style "display" "flex"
+    , style "align-items" "center"
+    , style "width" "100%"
+    ]
+
+
+classRowData : List (Html.Attribute msg)
+classRowData =
+    [ style "flex-grow" "1"
+    ]
+
+
+classContent : Model -> List (Html.Attribute msg)
+classContent model =
+    [ style "width" ("calc(100vw - " ++ String.fromInt (model.appInfo.drawerWidth + model.appInfo.drawerSettingsWidth) ++ "px)")
+    , style "height" ("calc(100vh - " ++ String.fromInt model.appInfo.appBarHeight ++ "px)")
+    , style "margin-top" (String.fromInt model.appInfo.appBarHeight ++ "px")
+    , style "margin-left" (String.fromInt model.appInfo.drawerWidth ++ "px")
+    , style "box-sizing" "border-box"
     ]
 
 
@@ -204,6 +230,17 @@ subscriptions model =
     Sub.none
 
 
+sortingSettingsView : Model -> Html Msg
+sortingSettingsView model =
+    div []
+        [ typography Caption "Einstellungen"
+        , div classRow
+            [ typography Label "Alorithmus:"
+            , input classRowData []
+            ]
+        ]
+
+
 view : Model -> Html Msg
 view model =
     div classApp
@@ -224,7 +261,11 @@ view model =
                     ]
                 ]
             ]
-        , div (classDrawerSettings model) []
+        , div (classDrawerSettings model)
+            [ sortingSettingsView model
+            ]
+        , div (classContent model)
+            []
         ]
 
 
@@ -234,8 +275,15 @@ update msg model =
         None ->
             ( model, Cmd.none )
 
-        Navigate Sort ->
-            ( model, Cmd.none )
+        Navigate menuOption ->
+            let
+                oldAppInfo =
+                    model.appInfo
+
+                newAppInfo =
+                    { oldAppInfo | currentMenuSelection = menuOption }
+            in
+            ( { model | appInfo = newAppInfo }, Cmd.none )
 
 
 main : Program () Model Msg
