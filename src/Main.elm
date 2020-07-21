@@ -8,7 +8,14 @@ import Html.Events exposing (onClick)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Styles exposing (..)
+import Svg exposing (Svg, rect, svg)
+import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
 import Types exposing (Menu(..), Model, Msg(..))
+
+
+unsortedItems : List Float
+unsortedItems =
+    [ 1, 0.3, 0.6, 0.4, 0.8 ]
 
 
 menuItemName : Menu -> String
@@ -77,8 +84,34 @@ view model =
             [ sortingSettingsView model
             ]
         , div (classContent model)
-            []
+            [ svg
+                [ width "100%"
+                , height "100%"
+                , viewBox "0 0 1 1"
+                ]
+                (itemsToSvg unsortedItems)
+            ]
         ]
+
+
+itemsToSvg : List Float -> List (Svg msg)
+itemsToSvg items =
+    let
+        itemWidth =
+            1.0 / toFloat (List.length items)
+    in
+    List.indexedMap
+        (\i value ->
+            rect
+                [ width (String.fromFloat itemWidth)
+                , height (String.fromFloat value)
+                , fill "rgba(255, 255, 255, 0.25)"
+                , x (String.fromFloat (toFloat i * itemWidth))
+                , y (String.fromFloat (1.0 - value))
+                ]
+                []
+        )
+        items
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
