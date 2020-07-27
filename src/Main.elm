@@ -3,19 +3,15 @@ module Main exposing (..)
 import Browser
 import Color
 import Html exposing (Html, a, button, div, input, li, p, select, span, text, ul)
-import Html.Attributes exposing (href, style)
-import Html.Events exposing (onClick)
+import Html.Attributes exposing (href, style, value)
+import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
+import Random
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
 import Types exposing (Menu(..), Model, Msg(..))
-
-
-unsortedItems : List Float
-unsortedItems =
-    [ 1, 0.3, 0.6, 0.4, 0.8 ]
 
 
 menuItemName : Menu -> String
@@ -23,6 +19,11 @@ menuItemName m =
     case m of
         Sort ->
             "Sortieralgorithmen"
+
+
+listGenerator : Int -> Random.Generator (List Float)
+listGenerator n =
+    Random.list n (Random.float 0 1)
 
 
 init : () -> ( Model, Cmd Msg )
@@ -34,8 +35,10 @@ init _ =
             , appBarHeight = 60
             , currentMenuSelection = Sort
             }
+      , items = [ 1, 0.3, 0.6, 0.4, 0.8 ]
+      , numItems = 10
       }
-    , Cmd.none
+    , Random.generate NewValues (listGenerator 10)
     )
 
 
@@ -54,9 +57,9 @@ sortingSettingsView model =
             ]
         , div classRow
             [ typography Label "Elemente"
-            , input classRowData []
+            , input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
             ]
-        , button classButton [ typography Button "Neue Werte" ]
+        , button (onClick GenValues :: classButton) [ typography Button "Neue Werte" ]
         ]
 
 
@@ -89,7 +92,7 @@ view model =
                 , height "100%"
                 , viewBox "0 0 1 1"
                 ]
-                (itemsToSvg unsortedItems)
+                (itemsToSvg model.items)
             ]
         ]
 
@@ -119,6 +122,19 @@ update msg model =
     case msg of
         None ->
             ( model, Cmd.none )
+
+        GenValues ->
+            ( model, Random.generate NewValues (listGenerator model.numItems) )
+
+        NewValues values ->
+            ( { model | items = values }, Cmd.none )
+
+        ChangeNumItems value ->
+            let
+                newNumItems =
+                    Maybe.withDefault 0 (String.toInt value)
+            in
+            ( { model | numItems = newNumItems }, Random.generate NewValues (listGenerator newNumItems) )
 
         Navigate menuOption ->
             let

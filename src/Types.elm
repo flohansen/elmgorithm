@@ -4,6 +4,9 @@ module Types exposing (..)
 type Msg
     = None
     | Navigate Menu
+    | NewValues (List Float)
+    | GenValues
+    | ChangeNumItems String
 
 
 type Menu
@@ -21,4 +24,6 @@ type alias AppInfo =
 
 type alias Model =
     { appInfo : AppInfo
+    , items : List Float
+    , numItems : Int
     }
