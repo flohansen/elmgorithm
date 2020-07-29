@@ -8,6 +8,7 @@ import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Random
+import Sort exposing (quickSort)
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
@@ -17,7 +18,7 @@ import Types exposing (Menu(..), Model, Msg(..))
 menuItemName : Menu -> String
 menuItemName m =
     case m of
-        Sort ->
+        SortMenu ->
             "Sortieralgorithmen"
 
 
@@ -33,7 +34,7 @@ init _ =
             , drawerWidth = 320
             , drawerSettingsWidth = 280
             , appBarHeight = 60
-            , currentMenuSelection = Sort
+            , currentMenuSelection = SortMenu
             }
       , items = [ 1, 0.3, 0.6, 0.4, 0.8 ]
       , numItems = 10
@@ -50,7 +51,8 @@ subscriptions model =
 sortingSettingsView : Model -> Html Msg
 sortingSettingsView model =
     div []
-        [ typography Caption "Einstellungen"
+        [ button (onClick Sort :: classFab) [ Filled.play_arrow 24 (Color <| Color.rgb 255 255 255) ]
+        , typography Caption "Einstellungen"
         , div classRow
             [ typography Label "Algorithmus"
             , select classRowData []
@@ -74,7 +76,7 @@ view model =
             , ul classMenu
                 [ li []
                     [ button
-                        (onClick (Navigate Sort)
+                        (onClick (Navigate SortMenu)
                             :: classMenuItem
                         )
                         [ span classMenuItemIcon [ Filled.sort 24 (Color <| Color.rgb 255 255 255) ]
@@ -135,6 +137,9 @@ update msg model =
                     Maybe.withDefault 0 (String.toInt value)
             in
             ( { model | numItems = newNumItems }, Random.generate NewValues (listGenerator newNumItems) )
+
+        Sort ->
+            ( { model | items = quickSort model.items }, Cmd.none )
 
         Navigate menuOption ->
             let

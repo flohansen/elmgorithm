@@ -7,10 +7,11 @@ type Msg
     | NewValues (List Float)
     | GenValues
     | ChangeNumItems String
+    | Sort
 
 
 type Menu
-    = Sort
+    = SortMenu
 
 
 type alias AppInfo =

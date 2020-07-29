@@ -102,10 +102,26 @@ classButton =
     ]
 
 
+classFab : List (Html.Attribute msg)
+classFab =
+    [ style "border-radius" "50%"
+    , style "border" "0"
+    , style "padding" "7px 0"
+    , style "outline" "none"
+    , style "cursor" "pointer"
+    , style "color" "#fff"
+    , style "background" "#DC2865"
+    , style "width" "48px"
+    , style "height" "48px"
+    , style "margin-bottom" "48px"
+    ]
+
+
 classContent : Model -> List (Html.Attribute msg)
 classContent model =
     [ style "width" ("calc(100vw - " ++ String.fromInt (model.appInfo.drawerWidth + model.appInfo.drawerSettingsWidth) ++ "px)")
     , style "height" "100vh"
+    , style "position" "relative"
     , style "padding-top" (String.fromInt model.appInfo.appBarHeight ++ "px")
     , style "margin-left" (String.fromInt model.appInfo.drawerWidth ++ "px")
     , style "box-sizing" "border-box"
