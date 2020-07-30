@@ -7,11 +7,18 @@ type Msg
     | NewValues (List Float)
     | GenValues
     | ChangeNumItems String
-    | Sort
+    | StartAnimation
+    | StopAnimation
+    | Tick
 
 
 type Menu
     = SortMenu
+
+
+type AnimationState
+    = Running
+    | Stopped
 
 
 type alias AppInfo =
@@ -25,6 +32,9 @@ type alias AppInfo =
 
 type alias Model =
     { appInfo : AppInfo
+    , state : AnimationState
     , items : List Float
     , numItems : Int
+    , tick : Int
+    , animationLog : List (List Float)
     }

@@ -8,11 +8,13 @@ import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Random
-import Sort exposing (quickSort)
+import Sort exposing (bubbleSort, quickSort)
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
-import Types exposing (Menu(..), Model, Msg(..))
+import Time
+import Tuple exposing (second)
+import Types exposing (AnimationState(..), Menu(..), Model, Msg(..))
 
 
 menuItemName : Menu -> String
@@ -36,22 +38,30 @@ init _ =
             , appBarHeight = 60
             , currentMenuSelection = SortMenu
             }
+      , state = Stopped
       , items = [ 1, 0.3, 0.6, 0.4, 0.8 ]
       , numItems = 10
+      , tick = 0
+      , animationLog = []
       }
     , Random.generate NewValues (listGenerator 10)
     )
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
+startStopButton : Model -> Html Msg
+startStopButton model =
+    case model.state of
+        Running ->
+            button (onClick StopAnimation :: classFab) [ Filled.stop 24 (Color <| Color.rgb 255 255 255) ]
+
+        Stopped ->
+            button (onClick StartAnimation :: classFab) [ Filled.play_arrow 24 (Color <| Color.rgb 255 255 255) ]
 
 
 sortingSettingsView : Model -> Html Msg
 sortingSettingsView model =
     div []
-        [ button (onClick Sort :: classFab) [ Filled.play_arrow 24 (Color <| Color.rgb 255 255 255) ]
+        [ startStopButton model
         , typography Caption "Einstellungen"
         , div classRow
             [ typography Label "Algorithmus"
@@ -72,7 +82,7 @@ view model =
             [ typography Header (menuItemName model.appInfo.currentMenuSelection)
             ]
         , div (classDrawer model)
-            [ typography Header model.appInfo.name
+            [ typography Header (String.fromInt model.tick)
             , ul classMenu
                 [ li []
                     [ button
@@ -138,8 +148,28 @@ update msg model =
             in
             ( { model | numItems = newNumItems }, Random.generate NewValues (listGenerator newNumItems) )
 
-        Sort ->
-            ( { model | items = quickSort model.items }, Cmd.none )
+        StartAnimation ->
+            ( { model | state = Running, animationLog = bubbleSort model.items }, Cmd.none )
+
+        StopAnimation ->
+            ( { model | state = Stopped, tick = 0 }, Cmd.none )
+
+        Tick ->
+            let
+                currentTick =
+                    model.tick + 1
+
+                frame =
+                    model.animationLog |> List.head
+
+                newAnimationLog =
+                    model.animationLog |> List.tail |> Maybe.withDefault []
+            in
+            if model.state == Running && frame /= Nothing then
+                ( { model | tick = currentTick, items = frame |> Maybe.withDefault [], animationLog = newAnimationLog }, Cmd.none )
+
+            else
+                ( model, Cmd.none )
 
         Navigate menuOption ->
             let
@@ -150,6 +180,11 @@ update msg model =
                     { oldAppInfo | currentMenuSelection = menuOption }
             in
             ( { model | appInfo = newAppInfo }, Cmd.none )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Time.every 16 (\_ -> Tick)
 
 
 main : Program () Model Msg
