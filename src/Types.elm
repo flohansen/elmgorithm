@@ -1,6 +1,11 @@
 module Types exposing (..)
 
 
+type SortAlgorithm
+    = BubbleSort
+    | QuickSort
+
+
 type Msg
     = None
     | Navigate Menu
@@ -10,6 +15,7 @@ type Msg
     | StartAnimation
     | StopAnimation
     | Tick
+    | ChangeSortAlgo String
 
 
 type Menu
@@ -37,4 +43,5 @@ type alias Model =
     , numItems : Int
     , tick : Int
     , animationLog : List (List Float)
+    , sortAlgo : SortAlgorithm
     }

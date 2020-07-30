@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Color
-import Html exposing (Html, a, button, div, input, li, p, select, span, text, ul)
+import Html exposing (Html, a, button, div, input, li, option, p, select, span, text, ul)
 import Html.Attributes exposing (href, style, value)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
@@ -14,7 +14,7 @@ import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
 import Time
 import Tuple exposing (second)
-import Types exposing (AnimationState(..), Menu(..), Model, Msg(..))
+import Types exposing (AnimationState(..), Menu(..), Model, Msg(..), SortAlgorithm(..))
 
 
 menuItemName : Menu -> String
@@ -43,6 +43,7 @@ init _ =
       , numItems = 10
       , tick = 0
       , animationLog = []
+      , sortAlgo = QuickSort
       }
     , Random.generate NewValues (listGenerator 10)
     )
@@ -65,7 +66,10 @@ sortingSettingsView model =
         , typography Caption "Einstellungen"
         , div classRow
             [ typography Label "Algorithmus"
-            , select classRowData []
+            , select (onInput ChangeSortAlgo :: classRowData)
+                [ option [ value "quickSort" ] [ text "Quick Sort" ]
+                , option [ value "bubbleSort" ] [ text "Bubble Sort" ]
+                ]
             ]
         , div classRow
             [ typography Label "Elemente"
@@ -148,8 +152,28 @@ update msg model =
             in
             ( { model | numItems = newNumItems }, Random.generate NewValues (listGenerator newNumItems) )
 
+        ChangeSortAlgo value ->
+            let
+                algo =
+                    case value of
+                        "quickSort" ->
+                            QuickSort
+
+                        "bubbleSort" ->
+                            BubbleSort
+
+                        _ ->
+                            QuickSort
+            in
+            ( { model | sortAlgo = algo }, Cmd.none )
+
         StartAnimation ->
-            ( { model | state = Running, animationLog = bubbleSort model.items }, Cmd.none )
+            case model.sortAlgo of
+                QuickSort ->
+                    ( { model | state = Running, animationLog = quickSort model.items |> second }, Cmd.none )
+
+                BubbleSort ->
+                    ( { model | state = Running, animationLog = bubbleSort model.items }, Cmd.none )
 
         StopAnimation ->
             ( { model | state = Stopped, tick = 0 }, Cmd.none )
