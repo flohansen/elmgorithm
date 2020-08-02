@@ -1,6 +1,57 @@
 module Sort exposing (..)
 
 
+mergeSort : List comparable -> List comparable
+mergeSort list =
+    case list of
+        [] ->
+            []
+
+        [ x ] ->
+            [ x ]
+
+        _ ->
+            let
+                ( left, right ) =
+                    divideList list
+            in
+            merge (mergeSort left) (mergeSort right) []
+
+
+divideList : List comparable -> ( List comparable, List comparable )
+divideList list =
+    let
+        numberLeft =
+            List.length list // 2
+
+        left =
+            List.take numberLeft list
+
+        right =
+            List.drop numberLeft list
+    in
+    ( left, right )
+
+
+merge : List comparable -> List comparable -> List comparable -> List comparable
+merge left right sorted =
+    case left of
+        [] ->
+            sorted ++ right
+
+        x :: xs ->
+            case right of
+                [] ->
+                    sorted ++ left
+
+                y :: ys ->
+                    if x <= y then
+                        merge xs right (sorted ++ [ x ])
+
+                    else
+                        merge left ys (sorted ++ [ y ])
+
+
 quickSort : List comparable -> ( List comparable, List (List comparable) )
 quickSort list =
     case list of

@@ -8,7 +8,7 @@ import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Random
-import Sort exposing (bubbleSort, quickSort)
+import Sort exposing (bubbleSort, mergeSort, quickSort)
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
@@ -67,8 +67,9 @@ sortingSettingsView model =
         , div classRow
             [ typography Label "Algorithmus"
             , select (onInput ChangeSortAlgo :: classRowData)
-                [ option [ value "quickSort" ] [ text "Quick Sort" ]
+                [ option [ value "mergeSort" ] [ text "Merge Sort" ]
                 , option [ value "bubbleSort" ] [ text "Bubble Sort" ]
+                , option [ value "quickSort" ] [ text "Quick Sort" ]
                 ]
             ]
         , div classRow
@@ -156,6 +157,9 @@ update msg model =
             let
                 algo =
                     case value of
+                        "mergeSort" ->
+                            MergeSort
+
                         "quickSort" ->
                             QuickSort
 
@@ -169,6 +173,9 @@ update msg model =
 
         StartAnimation ->
             case model.sortAlgo of
+                MergeSort ->
+                    ( { model | state = Running, items = mergeSort model.items }, Cmd.none )
+
                 QuickSort ->
                     ( { model | state = Running, animationLog = quickSort model.items |> second }, Cmd.none )
 

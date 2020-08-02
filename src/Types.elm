@@ -4,6 +4,7 @@ module Types exposing (..)
 type SortAlgorithm
     = BubbleSort
     | QuickSort
+    | MergeSort
 
 
 type Msg
