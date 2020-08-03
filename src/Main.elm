@@ -43,7 +43,7 @@ init _ =
       , numItems = 10
       , tick = 0
       , animationLog = []
-      , sortAlgo = QuickSort
+      , sortAlgo = MergeSort
       }
     , Random.generate NewValues (listGenerator 10)
     )
@@ -167,14 +167,14 @@ update msg model =
                             BubbleSort
 
                         _ ->
-                            QuickSort
+                            MergeSort
             in
             ( { model | sortAlgo = algo }, Cmd.none )
 
         StartAnimation ->
             case model.sortAlgo of
                 MergeSort ->
-                    ( { model | state = Running, items = mergeSort model.items }, Cmd.none )
+                    ( { model | state = Running, animationLog = mergeSort model.items [] [] |> second }, Cmd.none )
 
                 QuickSort ->
                     ( { model | state = Running, animationLog = quickSort model.items |> second }, Cmd.none )

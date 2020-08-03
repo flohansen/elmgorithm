@@ -1,21 +1,35 @@
 module Sort exposing (..)
 
 
-mergeSort : List comparable -> List comparable
-mergeSort list =
+mergeSort : List comparable -> List comparable -> List comparable -> ( List comparable, List (List comparable) )
+mergeSort list prevLeft prevRight =
     case list of
         [] ->
-            []
+            ( [], [] )
 
         [ x ] ->
-            [ x ]
+            ( list, [ prevLeft ++ list ++ prevRight ] )
 
         _ ->
             let
                 ( left, right ) =
                     divideList list
+
+                ( leftSorted, leftLog ) =
+                    mergeSort left prevLeft (right ++ prevRight)
+
+                ( rightSorted, rightLog ) =
+                    mergeSort right (prevLeft ++ leftSorted) prevRight
+
+                ( merged, mergedLog ) =
+                    merge leftSorted rightSorted [] prevLeft prevRight
+
+                log =
+                    leftLog
+                        ++ rightLog
+                        ++ mergedLog
             in
-            merge (mergeSort left) (mergeSort right) []
+            ( merged, log )
 
 
 divideList : List comparable -> ( List comparable, List comparable )
@@ -33,23 +47,31 @@ divideList list =
     ( left, right )
 
 
-merge : List comparable -> List comparable -> List comparable -> List comparable
-merge left right sorted =
+merge : List comparable -> List comparable -> List comparable -> List comparable -> List comparable -> ( List comparable, List (List comparable) )
+merge left right sorted prevLeft prevRight =
     case left of
         [] ->
-            sorted ++ right
+            ( sorted ++ right, [ prevLeft ++ sorted ++ right ++ prevRight ] )
 
         x :: xs ->
             case right of
                 [] ->
-                    sorted ++ left
+                    ( sorted ++ left, [ prevLeft ++ sorted ++ left ++ prevRight ] )
 
                 y :: ys ->
                     if x <= y then
-                        merge xs right (sorted ++ [ x ])
+                        let
+                            ( merged, mergeLog ) =
+                                merge xs right (sorted ++ [ x ]) prevLeft prevRight
+                        in
+                        ( merged, [ prevLeft ++ sorted ++ [ x ] ++ xs ++ right ++ prevRight ] ++ mergeLog )
 
                     else
-                        merge left ys (sorted ++ [ y ])
+                        let
+                            ( merged, mergeLog ) =
+                                merge left ys (sorted ++ [ y ]) prevLeft prevRight
+                        in
+                        ( merged, [ prevLeft ++ sorted ++ [ y ] ++ left ++ ys ++ prevRight ] ++ mergeLog )
 
 
 quickSort : List comparable -> ( List comparable, List (List comparable) )
