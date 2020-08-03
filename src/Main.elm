@@ -44,7 +44,7 @@ init _ =
       , animationLog = []
       , sortAlgo = MergeSort
       }
-    , Random.generate NewValues (listGenerator 10)
+    , Random.generate NewValues (listGenerator 100)
     )
 
 
