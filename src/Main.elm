@@ -182,7 +182,7 @@ update msg model =
                     ( { model | state = Running, animationLog = quickSort model.items |> keyFrames }, Cmd.none )
 
                 BubbleSort ->
-                    ( { model | state = Running, animationLog = bubbleSort model.items }, Cmd.none )
+                    ( { model | state = Running, animationLog = bubbleSort model.items |> keyFrames }, Cmd.none )
 
         StopAnimation ->
             ( { model | state = Stopped }, Cmd.none )

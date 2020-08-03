@@ -120,12 +120,12 @@ quickSort list =
             ( lowerSorted ++ [ pivot ] ++ higherSorted, frame )
 
 
-bubbleSort : List comparable -> List (KeyFrame comparable)
+bubbleSort : List comparable -> SortOutput comparable
 bubbleSort list =
     bubbleSortHelper (List.length list) False [] [] list
 
 
-bubbleSortHelper : Int -> Bool -> List (KeyFrame comparable) -> List comparable -> List comparable -> List (KeyFrame comparable)
+bubbleSortHelper : Int -> Bool -> List (KeyFrame comparable) -> List comparable -> List comparable -> SortOutput comparable
 bubbleSortHelper n swapped frames sorted list =
     if List.length sorted < n - 1 then
         case list of
@@ -144,10 +144,10 @@ bubbleSortHelper n swapped frames sorted list =
                     bubbleSortHelper (n - 1) False frames [] sorted
 
                 else
-                    frames ++ [ sorted ]
+                    ( sorted, frames ++ [ sorted ] )
 
     else if swapped then
         bubbleSortHelper (n - 1) False frames [] (sorted ++ list)
 
     else
-        frames ++ [ sorted ++ list ]
+        ( sorted, frames ++ [ sorted ++ list ] )
