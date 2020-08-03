@@ -196,11 +196,16 @@ update msg model =
                 newAnimationLog =
                     model.animationLog |> List.tail |> Maybe.withDefault []
             in
-            if model.state == Running && frame /= Nothing then
-                ( { model | tick = currentTick, items = frame |> Maybe.withDefault [], animationLog = newAnimationLog }, Cmd.none )
+            case frame of
+                Just f ->
+                    if model.state == Running then
+                        ( { model | tick = currentTick, items = frame |> Maybe.withDefault [], animationLog = newAnimationLog }, Cmd.none )
 
-            else
-                ( model, Cmd.none )
+                    else
+                        ( model, Cmd.none )
+
+                Nothing ->
+                    ( { model | tick = 0, state = Stopped }, Cmd.none )
 
         Navigate menuOption ->
             let
