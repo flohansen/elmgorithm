@@ -108,16 +108,19 @@ view model =
                 , height "100%"
                 , viewBox "0 0 1 1"
                 ]
-                (itemsToSvg model.items)
+                (itemsToSvg model.items 0.001)
             ]
         ]
 
 
-itemsToSvg : List Float -> List (Svg msg)
-itemsToSvg items =
+itemsToSvg : List Float -> Float -> List (Svg msg)
+itemsToSvg items spacing =
     let
+        totalSpacing =
+            toFloat (List.length items - 1) * spacing
+
         itemWidth =
-            1.0 / toFloat (List.length items)
+            (1.0 - totalSpacing) / toFloat (List.length items)
     in
     List.indexedMap
         (\i value ->
@@ -125,7 +128,7 @@ itemsToSvg items =
                 [ width (String.fromFloat itemWidth)
                 , height (String.fromFloat value)
                 , fill "rgba(255, 255, 255, 0.25)"
-                , x (String.fromFloat (toFloat i * itemWidth))
+                , x (String.fromFloat (toFloat i * (itemWidth + spacing)))
                 , y (String.fromFloat (1.0 - value))
                 ]
                 []
