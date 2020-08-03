@@ -1,17 +1,21 @@
-module Sort exposing (..)
+module Sort exposing (bubbleSort, keyFrames, mergeSort, quickSort)
 
 
-keyFrames : ( List comparable, List (List comparable) ) -> List (List comparable)
+type alias KeyFrame comparable =
+    List comparable
+
+
+keyFrames : ( List comparable, List (KeyFrame comparable) ) -> List (KeyFrame comparable)
 keyFrames ( _, log ) =
     log
 
 
-mergeSort : List comparable -> ( List comparable, List (List comparable) )
+mergeSort : List comparable -> ( List comparable, List (KeyFrame comparable) )
 mergeSort list =
     mergeSortHelper list [] []
 
 
-mergeSortHelper : List comparable -> List comparable -> List comparable -> ( List comparable, List (List comparable) )
+mergeSortHelper : List comparable -> List comparable -> List comparable -> ( List comparable, List (KeyFrame comparable) )
 mergeSortHelper list prevLeft prevRight =
     case list of
         [] ->
@@ -57,7 +61,7 @@ divideList list =
     ( left, right )
 
 
-merge : List comparable -> List comparable -> List comparable -> List comparable -> List comparable -> ( List comparable, List (List comparable) )
+merge : List comparable -> List comparable -> List comparable -> List comparable -> List comparable -> ( List comparable, List (KeyFrame comparable) )
 merge left right sorted prevLeft prevRight =
     case left of
         [] ->
@@ -84,7 +88,7 @@ merge left right sorted prevLeft prevRight =
                         ( merged, [ prevLeft ++ sorted ++ [ y ] ++ left ++ ys ++ prevRight ] ++ mergeLog )
 
 
-quickSort : List comparable -> ( List comparable, List (List comparable) )
+quickSort : List comparable -> ( List comparable, List (KeyFrame comparable) )
 quickSort list =
     case list of
         [] ->
@@ -112,12 +116,12 @@ quickSort list =
             ( lowerSorted ++ [ pivot ] ++ higherSorted, frame )
 
 
-bubbleSort : List comparable -> List (List comparable)
+bubbleSort : List comparable -> List (KeyFrame comparable)
 bubbleSort list =
     bubbleSortHelper (List.length list) False [] [] list
 
 
-bubbleSortHelper : Int -> Bool -> List (List comparable) -> List comparable -> List comparable -> List (List comparable)
+bubbleSortHelper : Int -> Bool -> List (KeyFrame comparable) -> List comparable -> List comparable -> List (KeyFrame comparable)
 bubbleSortHelper n swapped frames sorted list =
     if List.length sorted < n - 1 then
         case list of
