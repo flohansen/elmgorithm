@@ -1,8 +1,18 @@
 module Sort exposing (..)
 
 
-mergeSort : List comparable -> List comparable -> List comparable -> ( List comparable, List (List comparable) )
-mergeSort list prevLeft prevRight =
+keyFrames : ( List comparable, List (List comparable) ) -> List (List comparable)
+keyFrames ( _, log ) =
+    log
+
+
+mergeSort : List comparable -> ( List comparable, List (List comparable) )
+mergeSort list =
+    mergeSortHelper list [] []
+
+
+mergeSortHelper : List comparable -> List comparable -> List comparable -> ( List comparable, List (List comparable) )
+mergeSortHelper list prevLeft prevRight =
     case list of
         [] ->
             ( [], [] )
@@ -16,10 +26,10 @@ mergeSort list prevLeft prevRight =
                     divideList list
 
                 ( leftSorted, leftLog ) =
-                    mergeSort left prevLeft (right ++ prevRight)
+                    mergeSortHelper left prevLeft (right ++ prevRight)
 
                 ( rightSorted, rightLog ) =
-                    mergeSort right (prevLeft ++ leftSorted) prevRight
+                    mergeSortHelper right (prevLeft ++ leftSorted) prevRight
 
                 ( merged, mergedLog ) =
                     merge leftSorted rightSorted [] prevLeft prevRight

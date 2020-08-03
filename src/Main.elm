@@ -8,7 +8,7 @@ import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Random
-import Sort exposing (bubbleSort, mergeSort, quickSort)
+import Sort exposing (bubbleSort, keyFrames, mergeSort, quickSort)
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
@@ -176,10 +176,10 @@ update msg model =
         StartAnimation ->
             case model.sortAlgo of
                 MergeSort ->
-                    ( { model | state = Running, animationLog = mergeSort model.items [] [] |> second }, Cmd.none )
+                    ( { model | state = Running, animationLog = mergeSort model.items |> keyFrames }, Cmd.none )
 
                 QuickSort ->
-                    ( { model | state = Running, animationLog = quickSort model.items |> second }, Cmd.none )
+                    ( { model | state = Running, animationLog = quickSort model.items |> keyFrames }, Cmd.none )
 
                 BubbleSort ->
                     ( { model | state = Running, animationLog = bubbleSort model.items }, Cmd.none )
