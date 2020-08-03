@@ -5,17 +5,21 @@ type alias KeyFrame comparable =
     List comparable
 
 
-keyFrames : ( List comparable, List (KeyFrame comparable) ) -> List (KeyFrame comparable)
+type alias SortOutput comparable =
+    ( List comparable, List (KeyFrame comparable) )
+
+
+keyFrames : SortOutput comparable -> List (KeyFrame comparable)
 keyFrames ( _, log ) =
     log
 
 
-mergeSort : List comparable -> ( List comparable, List (KeyFrame comparable) )
+mergeSort : List comparable -> SortOutput comparable
 mergeSort list =
     mergeSortHelper list [] []
 
 
-mergeSortHelper : List comparable -> List comparable -> List comparable -> ( List comparable, List (KeyFrame comparable) )
+mergeSortHelper : List comparable -> List comparable -> List comparable -> SortOutput comparable
 mergeSortHelper list prevLeft prevRight =
     case list of
         [] ->
@@ -61,7 +65,7 @@ divideList list =
     ( left, right )
 
 
-merge : List comparable -> List comparable -> List comparable -> List comparable -> List comparable -> ( List comparable, List (KeyFrame comparable) )
+merge : List comparable -> List comparable -> List comparable -> List comparable -> List comparable -> SortOutput comparable
 merge left right sorted prevLeft prevRight =
     case left of
         [] ->
@@ -88,7 +92,7 @@ merge left right sorted prevLeft prevRight =
                         ( merged, [ prevLeft ++ sorted ++ [ y ] ++ left ++ ys ++ prevRight ] ++ mergeLog )
 
 
-quickSort : List comparable -> ( List comparable, List (KeyFrame comparable) )
+quickSort : List comparable -> SortOutput comparable
 quickSort list =
     case list of
         [] ->
