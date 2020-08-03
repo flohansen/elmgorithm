@@ -41,7 +41,6 @@ init _ =
       , state = Stopped
       , items = [ 1, 0.3, 0.6, 0.4, 0.8 ]
       , numItems = 10
-      , tick = 0
       , animationLog = []
       , sortAlgo = MergeSort
       }
@@ -87,7 +86,7 @@ view model =
             [ typography Header (menuItemName model.appInfo.currentMenuSelection)
             ]
         , div (classDrawer model)
-            [ typography Header (String.fromInt model.tick)
+            [ typography Header model.appInfo.name
             , ul classMenu
                 [ li []
                     [ button
@@ -183,13 +182,10 @@ update msg model =
                     ( { model | state = Running, animationLog = bubbleSort model.items }, Cmd.none )
 
         StopAnimation ->
-            ( { model | state = Stopped, tick = 0 }, Cmd.none )
+            ( { model | state = Stopped }, Cmd.none )
 
         Tick ->
             let
-                currentTick =
-                    model.tick + 1
-
                 frame =
                     model.animationLog |> List.head
 
@@ -199,13 +195,13 @@ update msg model =
             case frame of
                 Just f ->
                     if model.state == Running then
-                        ( { model | tick = currentTick, items = frame |> Maybe.withDefault [], animationLog = newAnimationLog }, Cmd.none )
+                        ( { model | items = frame |> Maybe.withDefault [], animationLog = newAnimationLog }, Cmd.none )
 
                     else
                         ( model, Cmd.none )
 
                 Nothing ->
-                    ( { model | tick = 0, state = Stopped }, Cmd.none )
+                    ( { model | state = Stopped }, Cmd.none )
 
         Navigate menuOption ->
             let

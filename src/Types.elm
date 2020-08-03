@@ -42,7 +42,6 @@ type alias Model =
     , state : AnimationState
     , items : List Float
     , numItems : Int
-    , tick : Int
     , animationLog : List (List Float)
     , sortAlgo : SortAlgorithm
     }
