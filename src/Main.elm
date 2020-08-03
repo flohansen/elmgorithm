@@ -40,7 +40,7 @@ init _ =
             }
       , state = Stopped
       , items = [ 1, 0.3, 0.6, 0.4, 0.8 ]
-      , numItems = 10
+      , numItems = 100
       , animationLog = []
       , sortAlgo = MergeSort
       }
