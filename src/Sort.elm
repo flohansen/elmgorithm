@@ -1,4 +1,4 @@
-module Sort exposing (bubbleSort, keyFrames, mergeSort, quickSort)
+module Sort exposing (bubbleSort, insertionSort, keyFrames, mergeSort, quickSort)
 
 
 type alias KeyFrame comparable =
@@ -12,6 +12,50 @@ type alias SortOutput comparable =
 keyFrames : SortOutput comparable -> List (KeyFrame comparable)
 keyFrames ( _, log ) =
     log
+
+
+insertionSort : List comparable -> SortOutput comparable
+insertionSort list =
+    insertionSortHelper list []
+
+
+insertionSortHelper : List comparable -> List comparable -> SortOutput comparable
+insertionSortHelper list sorted =
+    case list of
+        [] ->
+            ( sorted, [ sorted ] )
+
+        x :: xs ->
+            let
+                ( inserted, insertedLog ) =
+                    insert x sorted xs
+
+                ( insertedSorted, insertedSortedLog ) =
+                    insertionSortHelper xs inserted
+
+                log =
+                    insertedLog
+                        ++ insertedSortedLog
+            in
+            ( insertedSorted, log )
+
+
+insert : comparable -> List comparable -> List comparable -> SortOutput comparable
+insert x list rest =
+    case list of
+        y :: ys ->
+            if x <= y then
+                ( x :: y :: ys, [ rest ++ (x :: y :: ys) ] )
+
+            else
+                let
+                    ( inserted, insertedLog ) =
+                        insert x ys (rest ++ [ y ])
+                in
+                ( y :: inserted, (rest ++ x :: list) :: insertedLog )
+
+        [] ->
+            ( [ x ], [ rest ++ [ x ] ] )
 
 
 mergeSort : List comparable -> SortOutput comparable

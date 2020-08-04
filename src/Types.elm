@@ -5,6 +5,7 @@ type SortAlgorithm
     = BubbleSort
     | QuickSort
     | MergeSort
+    | InsertionSort
 
 
 type Msg

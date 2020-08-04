@@ -8,7 +8,7 @@ import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Random
-import Sort exposing (bubbleSort, keyFrames, mergeSort, quickSort)
+import Sort exposing (bubbleSort, insertionSort, keyFrames, mergeSort, quickSort)
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
@@ -69,6 +69,7 @@ sortingSettingsView model =
                 [ option [ value "mergeSort" ] [ text "Merge Sort" ]
                 , option [ value "bubbleSort" ] [ text "Bubble Sort" ]
                 , option [ value "quickSort" ] [ text "Quick Sort" ]
+                , option [ value "insertionSort" ] [ text "Insertion Sort" ]
                 ]
             ]
         , div classRow
@@ -168,6 +169,9 @@ update msg model =
                         "bubbleSort" ->
                             BubbleSort
 
+                        "insertionSort" ->
+                            InsertionSort
+
                         _ ->
                             MergeSort
             in
@@ -183,6 +187,9 @@ update msg model =
 
                 BubbleSort ->
                     ( { model | state = Running, animationLog = bubbleSort model.items |> keyFrames }, Cmd.none )
+
+                InsertionSort ->
+                    ( { model | state = Running, animationLog = insertionSort model.items |> keyFrames }, Cmd.none )
 
         StopAnimation ->
             ( { model | state = Stopped }, Cmd.none )
