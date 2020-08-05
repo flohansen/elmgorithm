@@ -88,6 +88,12 @@ classRowData =
     ]
 
 
+classSelectOption : List (Html.Attribute msg)
+classSelectOption =
+    [ style "background" "#000"
+    ]
+
+
 classButton : List (Html.Attribute msg)
 classButton =
     [ style "display" "block"

@@ -66,10 +66,10 @@ sortingSettingsView model =
         , div classRow
             [ typography Label "Algorithmus"
             , select (onInput ChangeSortAlgo :: classRowData)
-                [ option [ value "mergeSort" ] [ text "Merge Sort" ]
-                , option [ value "bubbleSort" ] [ text "Bubble Sort" ]
-                , option [ value "quickSort" ] [ text "Quick Sort" ]
-                , option [ value "insertionSort" ] [ text "Insertion Sort" ]
+                [ option (value "mergeSort" :: classSelectOption) [ text "Merge Sort" ]
+                , option (value "bubbleSort" :: classSelectOption) [ text "Bubble Sort" ]
+                , option (value "quickSort" :: classSelectOption) [ text "Quick Sort" ]
+                , option (value "insertionSort" :: classSelectOption) [ text "Insertion Sort" ]
                 ]
             ]
         , div classRow
