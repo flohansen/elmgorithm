@@ -41,8 +41,15 @@ type alias AppInfo =
 type alias Model =
     { appInfo : AppInfo
     , state : AnimationState
-    , items : List Float
+    , items : List Item
     , numItems : Int
-    , animationLog : List (List Float)
+    , animationLog : List (List Item)
     , sortAlgo : SortAlgorithm
+    }
+
+
+type alias Item =
+    { value : Float
+    , color : String
+    , animation : String
     }

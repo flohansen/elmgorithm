@@ -14,7 +14,7 @@ import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
 import Time
 import Tuple exposing (second)
-import Types exposing (AnimationState(..), Menu(..), Model, Msg(..), SortAlgorithm(..))
+import Types exposing (AnimationState(..), Item, Menu(..), Model, Msg(..), SortAlgorithm(..))
 
 
 menuItemName : Menu -> String
@@ -39,7 +39,7 @@ init _ =
             , currentMenuSelection = SortMenu
             }
       , state = Stopped
-      , items = [ 1, 0.3, 0.6, 0.4, 0.8 ]
+      , items = []
       , numItems = 100
       , animationLog = []
       , sortAlgo = MergeSort
@@ -114,7 +114,7 @@ view model =
         ]
 
 
-itemsToSvg : List Float -> Float -> List (Svg msg)
+itemsToSvg : List Item -> Float -> List (Svg msg)
 itemsToSvg items spacing =
     let
         totalSpacing =
@@ -124,13 +124,13 @@ itemsToSvg items spacing =
             (1.0 - totalSpacing) / toFloat (List.length items)
     in
     List.indexedMap
-        (\i value ->
+        (\i item ->
             rect
                 [ width (String.fromFloat itemWidth)
-                , height (String.fromFloat value)
-                , fill "rgba(255, 255, 255, 0.25)"
+                , height (String.fromFloat item.value)
+                , fill item.color
                 , x (String.fromFloat (toFloat i * (itemWidth + spacing)))
-                , y (String.fromFloat (1.0 - value))
+                , y (String.fromFloat (1.0 - item.value))
                 ]
                 []
         )
@@ -147,7 +147,7 @@ update msg model =
             ( model, Random.generate NewValues (listGenerator model.numItems) )
 
         NewValues values ->
-            ( { model | items = values }, Cmd.none )
+            ( { model | items = List.map (\x -> { value = x, color = "rgba(255, 255, 255, 0.15)", animation = "" }) values }, Cmd.none )
 
         ChangeNumItems value ->
             let
