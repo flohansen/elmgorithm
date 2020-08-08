@@ -226,7 +226,7 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 16 (\_ -> Tick)
+    Time.every 50 (\_ -> Tick)
 
 
 main : Program () Model Msg
