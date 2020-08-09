@@ -1,25 +1,27 @@
 module Sort exposing (bubbleSort, insertionSort, keyFrames, mergeSort, quickSort)
 
+import Types exposing (Item)
+
 
 type alias KeyFrame comparable =
     List comparable
 
 
-type alias SortOutput comparable =
-    ( List comparable, List (KeyFrame comparable) )
+type alias SortOutput =
+    ( List Item, List (KeyFrame Item) )
 
 
-keyFrames : SortOutput comparable -> List (KeyFrame comparable)
+keyFrames : SortOutput -> List (KeyFrame Item)
 keyFrames ( _, log ) =
     log
 
 
-insertionSort : List comparable -> SortOutput comparable
+insertionSort : List Item -> SortOutput
 insertionSort list =
     insertionSortHelper list []
 
 
-insertionSortHelper : List comparable -> List comparable -> SortOutput comparable
+insertionSortHelper : List Item -> List Item -> SortOutput
 insertionSortHelper list sorted =
     case list of
         [] ->
@@ -40,30 +42,37 @@ insertionSortHelper list sorted =
             ( insertedSorted, log )
 
 
-insert : comparable -> List comparable -> List comparable -> SortOutput comparable
+insert : Item -> List Item -> List Item -> SortOutput
 insert x list rest =
     case list of
         y :: ys ->
-            if x <= y then
-                ( x :: y :: ys, [ rest ++ (x :: y :: ys) ] )
+            let
+                indicatedX =
+                    { x | color = "red" }
+
+                indicatedY =
+                    { y | color = "red" }
+            in
+            if x.value <= y.value then
+                ( x :: y :: ys, [ rest ++ (indicatedX :: indicatedY :: ys) ] )
 
             else
                 let
                     ( inserted, insertedLog ) =
                         insert x ys (rest ++ [ y ])
                 in
-                ( y :: inserted, (rest ++ x :: list) :: insertedLog )
+                ( y :: inserted, (rest ++ indicatedX :: indicatedY :: ys) :: insertedLog )
 
         [] ->
             ( [ x ], [ rest ++ [ x ] ] )
 
 
-mergeSort : List comparable -> SortOutput comparable
+mergeSort : List Item -> SortOutput
 mergeSort list =
     mergeSortHelper list [] []
 
 
-mergeSortHelper : List comparable -> List comparable -> List comparable -> SortOutput comparable
+mergeSortHelper : List Item -> List Item -> List Item -> SortOutput
 mergeSortHelper list prevLeft prevRight =
     case list of
         [] ->
@@ -94,7 +103,7 @@ mergeSortHelper list prevLeft prevRight =
             ( merged, log )
 
 
-divideList : List comparable -> ( List comparable, List comparable )
+divideList : List Item -> ( List Item, List Item )
 divideList list =
     let
         numberLeft =
@@ -109,7 +118,7 @@ divideList list =
     ( left, right )
 
 
-merge : List comparable -> List comparable -> List comparable -> List comparable -> List comparable -> SortOutput comparable
+merge : List Item -> List Item -> List Item -> List Item -> List Item -> SortOutput
 merge left right sorted prevLeft prevRight =
     case left of
         [] ->
@@ -121,34 +130,56 @@ merge left right sorted prevLeft prevRight =
                     ( sorted ++ left, [ prevLeft ++ sorted ++ left ++ prevRight ] )
 
                 y :: ys ->
-                    if x <= y then
+                    let
+                        indicatedX =
+                            { x | color = "red" }
+
+                        indicatedY =
+                            { y | color = "red" }
+                    in
+                    if x.value <= y.value then
                         let
                             ( merged, mergeLog ) =
                                 merge xs right (sorted ++ [ x ]) prevLeft prevRight
                         in
-                        ( merged, [ prevLeft ++ sorted ++ [ x ] ++ xs ++ right ++ prevRight ] ++ mergeLog )
+                        ( merged, [ prevLeft ++ sorted ++ [ indicatedX ] ++ xs ++ indicatedY :: ys ++ prevRight ] ++ mergeLog )
 
                     else
                         let
                             ( merged, mergeLog ) =
                                 merge left ys (sorted ++ [ y ]) prevLeft prevRight
                         in
-                        ( merged, [ prevLeft ++ sorted ++ [ y ] ++ left ++ ys ++ prevRight ] ++ mergeLog )
+                        ( merged, [ prevLeft ++ sorted ++ [ indicatedY ] ++ indicatedX :: xs ++ ys ++ prevRight ] ++ mergeLog )
 
 
-quickSort : List comparable -> SortOutput comparable
+filter : Item -> List Item -> ( List Item, List Item, List (KeyFrame Item) )
+filter item list =
+    case list of
+        [] ->
+            ( [], [], [ [ item ] ] )
+
+        x :: xs ->
+            let
+                ( l, h, lowerHigherLog ) =
+                    filter item xs
+            in
+            if x.value <= item.value then
+                ( l ++ [ x ], h, List.map (\n -> n ++ [ x ]) lowerHigherLog ++ [ l ++ [ { x | color = "red" } ] ++ { item | color = "blue" } :: h ] )
+
+            else
+                ( l, h ++ [ x ], List.map (\n -> n ++ [ x ]) lowerHigherLog ++ [ l ++ { item | color = "blue" } :: h ++ [ { x | color = "red" } ] ] )
+
+
+quickSort : List Item -> SortOutput
 quickSort list =
     case list of
         [] ->
             ( [], [] )
 
-        pivot :: xs ->
+        x :: xs ->
             let
-                lower =
-                    List.filter (\n -> n <= pivot) xs
-
-                higher =
-                    List.filter (\n -> n > pivot) xs
+                ( lower, higher, lowerHigherLog ) =
+                    filter x xs
 
                 ( lowerSorted, lowerFrame ) =
                     quickSort lower
@@ -157,31 +188,43 @@ quickSort list =
                     quickSort higher
 
                 frame =
-                    List.map (\l -> l ++ [ pivot ] ++ higher) lowerFrame
-                        ++ List.map (\h -> lowerSorted ++ [ pivot ] ++ h) higherFrame
-                        ++ [ lowerSorted ++ [ pivot ] ++ higherSorted ]
+                    lowerHigherLog
+                        ++ List.map (\l -> l ++ [ x ] ++ higher) lowerFrame
+                        ++ List.map (\h -> lowerSorted ++ [ x ] ++ h) higherFrame
+                        ++ [ lowerSorted ++ [ x ] ++ higherSorted ]
             in
-            ( lowerSorted ++ [ pivot ] ++ higherSorted, frame )
+            ( lowerSorted ++ [ x ] ++ higherSorted, frame )
 
 
-bubbleSort : List comparable -> SortOutput comparable
+bubbleSort : List Item -> SortOutput
 bubbleSort list =
     bubbleSortHelper (List.length list) False [] [] list
 
 
-bubbleSortHelper : Int -> Bool -> List (KeyFrame comparable) -> List comparable -> List comparable -> SortOutput comparable
+bubbleSortHelper : Int -> Bool -> List (KeyFrame Item) -> List Item -> List Item -> SortOutput
 bubbleSortHelper n swapped frames sorted list =
     if List.length sorted < n - 1 then
         case list of
             x :: y :: xs ->
-                if x > y then
-                    bubbleSortHelper n True (frames ++ [ sorted ++ [ y ] ++ (x :: xs) ]) (sorted ++ [ y ]) (x :: xs)
+                let
+                    indicatedX =
+                        { x | color = "red" }
+
+                    indicatedY =
+                        { y | color = "red" }
+                in
+                if x.value > y.value then
+                    bubbleSortHelper n True (frames ++ [ sorted ++ [ indicatedY ] ++ (indicatedX :: xs) ]) (sorted ++ [ y ]) (x :: xs)
 
                 else
-                    bubbleSortHelper n swapped (frames ++ [ sorted ++ [ x ] ++ (y :: xs) ]) (sorted ++ [ x ]) (y :: xs)
+                    bubbleSortHelper n swapped (frames ++ [ sorted ++ [ indicatedX ] ++ (indicatedY :: xs) ]) (sorted ++ [ x ]) (y :: xs)
 
             x :: xs ->
-                bubbleSortHelper n swapped (frames ++ [ sorted ++ [ x ] ++ xs ]) (sorted ++ [ x ]) xs
+                let
+                    indicatedX =
+                        { x | color = "red" }
+                in
+                bubbleSortHelper n swapped (frames ++ [ sorted ++ [ indicatedX ] ++ xs ]) (sorted ++ [ x ]) xs
 
             [] ->
                 if swapped then
