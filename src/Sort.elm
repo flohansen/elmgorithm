@@ -8,12 +8,14 @@ type alias KeyFrame comparable =
 
 
 type alias SortOutput =
-    ( List Item, List (KeyFrame Item) )
+    { items : List Item
+    , animation : List (KeyFrame Item)
+    }
 
 
 keyFrames : SortOutput -> List (KeyFrame Item)
-keyFrames ( _, log ) =
-    log
+keyFrames o =
+    o.animation
 
 
 insertionSort : List Item -> SortOutput
@@ -25,21 +27,21 @@ insertionSortHelper : List Item -> List Item -> SortOutput
 insertionSortHelper list sorted =
     case list of
         [] ->
-            ( sorted, [ sorted ] )
+            SortOutput sorted [ sorted ]
 
         x :: xs ->
             let
-                ( inserted, insertedLog ) =
+                inserted =
                     insert x sorted xs
 
-                ( insertedSorted, insertedSortedLog ) =
-                    insertionSortHelper xs inserted
+                insertedSorted =
+                    insertionSortHelper xs inserted.items
 
                 log =
-                    insertedLog
-                        ++ insertedSortedLog
+                    inserted.animation
+                        ++ insertedSorted.animation
             in
-            ( insertedSorted, log )
+            SortOutput insertedSorted.items log
 
 
 insert : Item -> List Item -> List Item -> SortOutput
@@ -54,17 +56,17 @@ insert x list rest =
                     { y | color = "red" }
             in
             if x.value <= y.value then
-                ( x :: y :: ys, [ rest ++ (indicatedX :: indicatedY :: ys) ] )
+                SortOutput (x :: y :: ys) [ rest ++ (indicatedX :: indicatedY :: ys) ]
 
             else
                 let
-                    ( inserted, insertedLog ) =
+                    inserted =
                         insert x ys (rest ++ [ y ])
                 in
-                ( y :: inserted, (rest ++ indicatedX :: indicatedY :: ys) :: insertedLog )
+                SortOutput (y :: inserted.items) ((rest ++ indicatedX :: indicatedY :: ys) :: inserted.animation)
 
         [] ->
-            ( [ x ], [ rest ++ [ x ] ] )
+            SortOutput [ x ] [ rest ++ [ x ] ]
 
 
 mergeSort : List Item -> SortOutput
@@ -76,31 +78,31 @@ mergeSortHelper : List Item -> List Item -> List Item -> SortOutput
 mergeSortHelper list prevLeft prevRight =
     case list of
         [] ->
-            ( [], [] )
+            SortOutput [] []
 
         [ x ] ->
-            ( list, [ prevLeft ++ list ++ prevRight ] )
+            SortOutput list [ prevLeft ++ list ++ prevRight ]
 
         _ ->
             let
                 ( left, right ) =
                     divideList list
 
-                ( leftSorted, leftLog ) =
+                leftSorted =
                     mergeSortHelper left prevLeft (right ++ prevRight)
 
-                ( rightSorted, rightLog ) =
-                    mergeSortHelper right (prevLeft ++ leftSorted) prevRight
+                rightSorted =
+                    mergeSortHelper right (prevLeft ++ leftSorted.items) prevRight
 
-                ( merged, mergedLog ) =
-                    merge leftSorted rightSorted [] prevLeft prevRight
+                merged =
+                    merge leftSorted.items rightSorted.items [] prevLeft prevRight
 
                 log =
-                    leftLog
-                        ++ rightLog
-                        ++ mergedLog
+                    leftSorted.animation
+                        ++ rightSorted.animation
+                        ++ merged.animation
             in
-            ( merged, log )
+            SortOutput merged.items log
 
 
 divideList : List Item -> ( List Item, List Item )
@@ -122,12 +124,12 @@ merge : List Item -> List Item -> List Item -> List Item -> List Item -> SortOut
 merge left right sorted prevLeft prevRight =
     case left of
         [] ->
-            ( sorted ++ right, [ prevLeft ++ sorted ++ right ++ prevRight ] )
+            SortOutput (sorted ++ right) [ prevLeft ++ sorted ++ right ++ prevRight ]
 
         x :: xs ->
             case right of
                 [] ->
-                    ( sorted ++ left, [ prevLeft ++ sorted ++ left ++ prevRight ] )
+                    SortOutput (sorted ++ left) [ prevLeft ++ sorted ++ left ++ prevRight ]
 
                 y :: ys ->
                     let
@@ -139,17 +141,17 @@ merge left right sorted prevLeft prevRight =
                     in
                     if x.value <= y.value then
                         let
-                            ( merged, mergeLog ) =
+                            merged =
                                 merge xs right (sorted ++ [ x ]) prevLeft prevRight
                         in
-                        ( merged, [ prevLeft ++ sorted ++ [ indicatedX ] ++ xs ++ indicatedY :: ys ++ prevRight ] ++ mergeLog )
+                        SortOutput merged.items ([ prevLeft ++ sorted ++ [ indicatedX ] ++ xs ++ indicatedY :: ys ++ prevRight ] ++ merged.animation)
 
                     else
                         let
-                            ( merged, mergeLog ) =
+                            merged =
                                 merge left ys (sorted ++ [ y ]) prevLeft prevRight
                         in
-                        ( merged, [ prevLeft ++ sorted ++ [ indicatedY ] ++ indicatedX :: xs ++ ys ++ prevRight ] ++ mergeLog )
+                        SortOutput merged.items ([ prevLeft ++ sorted ++ [ indicatedY ] ++ indicatedX :: xs ++ ys ++ prevRight ] ++ merged.animation)
 
 
 filter : Item -> List Item -> ( List Item, List Item, List (KeyFrame Item) )
@@ -174,26 +176,26 @@ quickSort : List Item -> SortOutput
 quickSort list =
     case list of
         [] ->
-            ( [], [] )
+            SortOutput [] []
 
         x :: xs ->
             let
                 ( lower, higher, lowerHigherLog ) =
                     filter x xs
 
-                ( lowerSorted, lowerFrame ) =
+                lowerSorted =
                     quickSort lower
 
-                ( higherSorted, higherFrame ) =
+                higherSorted =
                     quickSort higher
 
                 frame =
                     lowerHigherLog
-                        ++ List.map (\l -> l ++ [ x ] ++ higher) lowerFrame
-                        ++ List.map (\h -> lowerSorted ++ [ x ] ++ h) higherFrame
-                        ++ [ lowerSorted ++ [ x ] ++ higherSorted ]
+                        ++ List.map (\l -> l ++ [ x ] ++ higher) lowerSorted.animation
+                        ++ List.map (\h -> lowerSorted.items ++ [ x ] ++ h) higherSorted.animation
+                        ++ [ lowerSorted.items ++ [ x ] ++ higherSorted.items ]
             in
-            ( lowerSorted ++ [ x ] ++ higherSorted, frame )
+            SortOutput (lowerSorted.items ++ [ x ] ++ higherSorted.items) frame
 
 
 bubbleSort : List Item -> SortOutput
@@ -231,10 +233,10 @@ bubbleSortHelper n swapped frames sorted list =
                     bubbleSortHelper (n - 1) False frames [] sorted
 
                 else
-                    ( sorted, frames ++ [ sorted ] )
+                    SortOutput sorted (frames ++ [ sorted ])
 
     else if swapped then
         bubbleSortHelper (n - 1) False frames [] (sorted ++ list)
 
     else
-        ( sorted, frames ++ [ sorted ++ list ] )
+        SortOutput sorted (frames ++ [ sorted ++ list ])
