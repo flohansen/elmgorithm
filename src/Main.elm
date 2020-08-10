@@ -8,13 +8,13 @@ import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Random
-import Sort exposing (bubbleSort, insertionSort, keyFrames, mergeSort, quickSort)
+import Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, quickSort)
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
 import Time
 import Tuple exposing (second)
-import Types exposing (AnimationState(..), Item, Menu(..), Model, Msg(..), SortAlgorithm(..))
+import Types exposing (AnimationFrame, AnimationState(..), Item, Menu(..), Model, Msg(..))
 
 
 menuItemName : Menu -> String
@@ -42,7 +42,8 @@ init _ =
       , items = []
       , numItems = 100
       , animationLog = []
-      , sortAlgo = MergeSort
+      , algorithm = mergeSort
+      , comparisons = 0
       }
     , Random.generate NewValues (listGenerator 100)
     )
@@ -104,9 +105,16 @@ view model =
             [ sortingSettingsView model
             ]
         , div (classContent model)
-            [ svg
+            [ div [ style "height" "65px", style "line-height" "65px" ]
+                [ div [ style "display" "flex", style "padding" "0 24px" ]
+                    [ "Vergleiche:" |> typography Label
+                    , model.comparisons |> String.fromInt |> typography Label
+                    ]
+                ]
+            , svg
                 [ width "100%"
-                , height "100%"
+                , style "height" "calc(100% - 65px)"
+                , style "display" "block"
                 , viewBox "0 0 1 1"
                 ]
                 (itemsToSvg model.items 0.001)
@@ -161,38 +169,37 @@ update msg model =
                 algo =
                     case value of
                         "mergeSort" ->
-                            MergeSort
+                            mergeSort
 
                         "quickSort" ->
-                            QuickSort
+                            quickSort
 
                         "bubbleSort" ->
-                            BubbleSort
+                            bubbleSort
 
                         "insertionSort" ->
-                            InsertionSort
+                            insertionSort
 
                         _ ->
-                            MergeSort
+                            mergeSort
             in
-            ( { model | sortAlgo = algo }, Cmd.none )
+            ( { model | algorithm = algo }, Cmd.none )
 
         StartAnimation ->
-            case model.sortAlgo of
-                MergeSort ->
-                    ( { model | state = Running, animationLog = mergeSort model.items |> keyFrames }, Cmd.none )
-
-                QuickSort ->
-                    ( { model | state = Running, animationLog = quickSort model.items |> keyFrames }, Cmd.none )
-
-                BubbleSort ->
-                    ( { model | state = Running, animationLog = bubbleSort model.items |> keyFrames }, Cmd.none )
-
-                InsertionSort ->
-                    ( { model | state = Running, animationLog = insertionSort model.items |> keyFrames }, Cmd.none )
+            ( { model
+                | state = Running
+                , comparisons = 0
+                , animationLog = model.items |> model.algorithm |> animationFrames
+              }
+            , Cmd.none
+            )
 
         StopAnimation ->
-            ( { model | state = Stopped }, Cmd.none )
+            ( { model
+                | state = Stopped
+              }
+            , Cmd.none
+            )
 
         Tick ->
             let
@@ -205,7 +212,13 @@ update msg model =
             case frame of
                 Just f ->
                     if model.state == Running then
-                        ( { model | items = frame |> Maybe.withDefault [], animationLog = newAnimationLog }, Cmd.none )
+                        ( { model
+                            | items = f.items
+                            , animationLog = newAnimationLog
+                            , comparisons = model.comparisons + f.comparisons
+                          }
+                        , Cmd.none
+                        )
 
                     else
                         ( model, Cmd.none )

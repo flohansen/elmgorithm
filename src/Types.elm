@@ -1,13 +1,6 @@
 module Types exposing (..)
 
 
-type SortAlgorithm
-    = BubbleSort
-    | QuickSort
-    | MergeSort
-    | InsertionSort
-
-
 type Msg
     = None
     | Navigate Menu
@@ -29,6 +22,18 @@ type AnimationState
     | Stopped
 
 
+type alias AnimationFrame =
+    { items : List Item
+    , comparisons : Int
+    }
+
+
+type alias SortOutput =
+    { items : List Item
+    , animation : List AnimationFrame
+    }
+
+
 type alias AppInfo =
     { name : String
     , drawerWidth : Int
@@ -43,8 +48,9 @@ type alias Model =
     , state : AnimationState
     , items : List Item
     , numItems : Int
-    , animationLog : List (List Item)
-    , sortAlgo : SortAlgorithm
+    , animationLog : List AnimationFrame
+    , algorithm : List Item -> SortOutput
+    , comparisons : Int
     }
 
 
