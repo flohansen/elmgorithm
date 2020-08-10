@@ -3,9 +3,9 @@ module Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, qui
 import Types exposing (AnimationFrame, Item, SortOutput)
 
 
-animationFrames : SortOutput -> List (List Item)
+animationFrames : SortOutput -> List AnimationFrame
 animationFrames o =
-    List.map (\x -> x.items) o.animation
+    o.animation
 
 
 insertionSort : List Item -> SortOutput

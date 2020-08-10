@@ -14,7 +14,7 @@ import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
 import Time
 import Tuple exposing (second)
-import Types exposing (AnimationState(..), Item, Menu(..), Model, Msg(..))
+import Types exposing (AnimationFrame, AnimationState(..), Item, Menu(..), Model, Msg(..))
 
 
 menuItemName : Menu -> String
@@ -208,7 +208,13 @@ update msg model =
             case frame of
                 Just f ->
                     if model.state == Running then
-                        ( { model | items = frame |> Maybe.withDefault [], animationLog = newAnimationLog }, Cmd.none )
+                        ( { model
+                            | items = f.items
+                            , animationLog = newAnimationLog
+                            , comparisons = model.comparisons + f.comparisons
+                          }
+                        , Cmd.none
+                        )
 
                     else
                         ( model, Cmd.none )

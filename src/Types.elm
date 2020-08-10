@@ -48,7 +48,7 @@ type alias Model =
     , state : AnimationState
     , items : List Item
     , numItems : Int
-    , animationLog : List (List Item)
+    , animationLog : List AnimationFrame
     , algorithm : List Item -> SortOutput
     , comparisons : Int
     }
