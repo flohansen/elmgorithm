@@ -45,6 +45,7 @@ type alias Model =
     , numItems : Int
     , animationLog : List (List Item)
     , sortAlgo : SortAlgorithm
+    , comparisons : Int
     }
 
 

@@ -43,6 +43,7 @@ init _ =
       , numItems = 100
       , animationLog = []
       , sortAlgo = MergeSort
+      , comparisons = 0
       }
     , Random.generate NewValues (listGenerator 100)
     )
@@ -104,7 +105,10 @@ view model =
             [ sortingSettingsView model
             ]
         , div (classContent model)
-            [ svg
+            [ div []
+                [ model.comparisons |> String.fromInt |> typography Label
+                ]
+            , svg
                 [ width "100%"
                 , height "100%"
                 , viewBox "0 0 1 1"
