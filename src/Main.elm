@@ -105,12 +105,16 @@ view model =
             [ sortingSettingsView model
             ]
         , div (classContent model)
-            [ div []
-                [ model.comparisons |> String.fromInt |> typography Label
+            [ div [ style "height" "65px", style "line-height" "65px" ]
+                [ div [ style "display" "flex", style "padding" "0 24px" ]
+                    [ "Vergleiche:" |> typography Label
+                    , model.comparisons |> String.fromInt |> typography Label
+                    ]
                 ]
             , svg
                 [ width "100%"
-                , height "100%"
+                , style "height" "calc(100% - 65px)"
+                , style "display" "block"
                 , viewBox "0 0 1 1"
                 ]
                 (itemsToSvg model.items 0.001)
