@@ -14,7 +14,7 @@ import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
 import Time
 import Tuple exposing (second)
-import Types exposing (AnimationState(..), Item, Menu(..), Model, Msg(..), SortAlgorithm(..))
+import Types exposing (AnimationState(..), Item, Menu(..), Model, Msg(..))
 
 
 menuItemName : Menu -> String
@@ -42,7 +42,7 @@ init _ =
       , items = []
       , numItems = 100
       , animationLog = []
-      , sortAlgo = MergeSort
+      , algorithm = mergeSort
       , comparisons = 0
       }
     , Random.generate NewValues (listGenerator 100)
@@ -165,38 +165,37 @@ update msg model =
                 algo =
                     case value of
                         "mergeSort" ->
-                            MergeSort
+                            mergeSort
 
                         "quickSort" ->
-                            QuickSort
+                            quickSort
 
                         "bubbleSort" ->
-                            BubbleSort
+                            bubbleSort
 
                         "insertionSort" ->
-                            InsertionSort
+                            insertionSort
 
                         _ ->
-                            MergeSort
+                            mergeSort
             in
-            ( { model | sortAlgo = algo }, Cmd.none )
+            ( { model | algorithm = algo }, Cmd.none )
 
         StartAnimation ->
-            case model.sortAlgo of
-                MergeSort ->
-                    ( { model | state = Running, animationLog = mergeSort model.items |> animationFrames }, Cmd.none )
-
-                QuickSort ->
-                    ( { model | state = Running, animationLog = quickSort model.items |> animationFrames }, Cmd.none )
-
-                BubbleSort ->
-                    ( { model | state = Running, animationLog = bubbleSort model.items |> animationFrames }, Cmd.none )
-
-                InsertionSort ->
-                    ( { model | state = Running, animationLog = insertionSort model.items |> animationFrames }, Cmd.none )
+            ( { model
+                | state = Running
+                , comparisons = 0
+                , animationLog = model.items |> model.algorithm |> animationFrames
+              }
+            , Cmd.none
+            )
 
         StopAnimation ->
-            ( { model | state = Stopped }, Cmd.none )
+            ( { model
+                | state = Stopped
+              }
+            , Cmd.none
+            )
 
         Tick ->
             let

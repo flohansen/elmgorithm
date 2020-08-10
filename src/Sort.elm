@@ -1,18 +1,6 @@
 module Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, quickSort)
 
-import Types exposing (Item)
-
-
-type alias AnimationFrame =
-    { items : List Item
-    , comparisons : Int
-    }
-
-
-type alias SortOutput =
-    { items : List Item
-    , animation : List AnimationFrame
-    }
+import Types exposing (AnimationFrame, Item, SortOutput)
 
 
 animationFrames : SortOutput -> List (List Item)
@@ -146,14 +134,14 @@ merge left right sorted prevLeft prevRight =
                             merged =
                                 merge xs right (sorted ++ [ x ]) prevLeft prevRight
                         in
-                        SortOutput merged.items (AnimationFrame (prevLeft ++ sorted ++ [ indicatedX ] ++ xs ++ indicatedY :: ys ++ prevRight) 0 :: merged.animation)
+                        SortOutput merged.items (AnimationFrame (prevLeft ++ sorted ++ [ indicatedX ] ++ xs ++ indicatedY :: ys ++ prevRight) 1 :: merged.animation)
 
                     else
                         let
                             merged =
                                 merge left ys (sorted ++ [ y ]) prevLeft prevRight
                         in
-                        SortOutput merged.items (AnimationFrame (prevLeft ++ sorted ++ [ indicatedY ] ++ indicatedX :: xs ++ ys ++ prevRight) 0 :: merged.animation)
+                        SortOutput merged.items (AnimationFrame (prevLeft ++ sorted ++ [ indicatedY ] ++ indicatedX :: xs ++ ys ++ prevRight) 1 :: merged.animation)
 
 
 filter : Item -> List Item -> ( List Item, List Item, List AnimationFrame )
