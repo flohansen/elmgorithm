@@ -81,6 +81,18 @@ sortingSettingsView model =
         ]
 
 
+dot : String -> Html Msg
+dot color =
+    div
+        [ style "background" color
+        , style "width" "5px"
+        , style "height" "5px"
+        , style "border-radius" "50%"
+        , style "margin-right" "16px"
+        ]
+        []
+
+
 view : Model -> Html Msg
 view model =
     div classApp
@@ -105,10 +117,20 @@ view model =
             [ sortingSettingsView model
             ]
         , div (classContent model)
-            [ div [ style "height" "65px", style "line-height" "65px" ]
-                [ div [ style "display" "flex", style "padding" "0 24px" ]
-                    [ "Vergleiche:" |> typography Label
-                    , model.comparisons |> String.fromInt |> typography Label
+            [ div [ style "height" "65px", style "display" "flex", style "padding" "0 24px", style "justify-content" "space-between" ]
+                [ div
+                    [ style "display" "flex"
+                    , style "align-items" "center"
+                    ]
+                    [ dot "red"
+                    , "Verglichende Elemente" |> typography Subheader
+                    ]
+                , div
+                    [ style "display" "flex"
+                    , style "align-items" "center"
+                    ]
+                    [ "Vergleiche:" |> typography Subheader
+                    , model.comparisons |> String.fromInt |> typography Subheader
                     ]
                 ]
             , svg

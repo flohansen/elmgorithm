@@ -11,6 +11,7 @@ type TypographyType
     | Label
     | Button
     | Caption
+    | Subheader
 
 
 classApp : List (Html.Attribute msg)
@@ -218,6 +219,15 @@ classMenuItemIcon =
     ]
 
 
+classTypoSubheader : List (Html.Attribute msg)
+classTypoSubheader =
+    classTypo
+        ++ [ style "font-size" "14px"
+           , style "color" "#A7A7A7"
+           , style "margin-right" "8px"
+           ]
+
+
 typography : TypographyType -> String -> Html msg
 typography typoType str =
     case typoType of
@@ -235,3 +245,6 @@ typography typoType str =
 
         Caption ->
             p classTypoCaption [ text str ]
+
+        Subheader ->
+            p classTypoSubheader [ text str ]
