@@ -46,14 +46,14 @@ insert x list rest =
                     { y | color = "red" }
             in
             if x.value <= y.value then
-                SortOutput (x :: y :: ys) [ AnimationFrame (rest ++ (indicatedX :: indicatedY :: ys)) 0 ]
+                SortOutput (x :: y :: ys) [ AnimationFrame (rest ++ (indicatedX :: indicatedY :: ys)) 1 ]
 
             else
                 let
                     inserted =
                         insert x ys (rest ++ [ y ])
                 in
-                SortOutput (y :: inserted.items) (AnimationFrame (rest ++ indicatedX :: indicatedY :: ys) 0 :: inserted.animation)
+                SortOutput (y :: inserted.items) (AnimationFrame (rest ++ indicatedX :: indicatedY :: ys) 1 :: inserted.animation)
 
         [] ->
             SortOutput [ x ] [ AnimationFrame (rest ++ [ x ]) 0 ]
@@ -156,10 +156,10 @@ filter item list =
                     filter item xs
             in
             if x.value <= item.value then
-                ( l ++ [ x ], h, List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ [ { x | color = "red" } ] ++ { item | color = "blue" } :: h) 0 ] )
+                ( l ++ [ x ], h, List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ [ { x | color = "red" } ] ++ { item | color = "blue" } :: h) 1 ] )
 
             else
-                ( l, h ++ [ x ], List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ { item | color = "blue" } :: h ++ [ { x | color = "red" } ]) 0 ] )
+                ( l, h ++ [ x ], List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ { item | color = "blue" } :: h ++ [ { x | color = "red" } ]) 1 ] )
 
 
 quickSort : List Item -> SortOutput
@@ -204,16 +204,12 @@ bubbleSortHelper n swapped frames sorted list =
 
                     indicatedY =
                         { y | color = "red" }
-
-                    newFrames =
-                        frames
-                            ++ [ AnimationFrame (sorted ++ [ indicatedY ] ++ (indicatedX :: xs)) 0 ]
                 in
                 if x.value > y.value then
-                    bubbleSortHelper n True newFrames (sorted ++ [ y ]) (x :: xs)
+                    bubbleSortHelper n True (frames ++ [ AnimationFrame (sorted ++ [ indicatedY ] ++ (indicatedX :: xs)) 1 ]) (sorted ++ [ y ]) (x :: xs)
 
                 else
-                    bubbleSortHelper n swapped (frames ++ [ AnimationFrame (sorted ++ [ indicatedX ] ++ (indicatedY :: xs)) 0 ]) (sorted ++ [ x ]) (y :: xs)
+                    bubbleSortHelper n swapped (frames ++ [ AnimationFrame (sorted ++ [ indicatedX ] ++ (indicatedY :: xs)) 1 ]) (sorted ++ [ x ]) (y :: xs)
 
             x :: xs ->
                 let
