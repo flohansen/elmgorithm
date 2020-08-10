@@ -1,21 +1,23 @@
-module Sort exposing (bubbleSort, insertionSort, keyFrames, mergeSort, quickSort)
+module Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, quickSort)
 
 import Types exposing (Item)
 
 
-type alias KeyFrame comparable =
-    List comparable
+type alias AnimationFrame =
+    { items : List Item
+    , comparisons : Int
+    }
 
 
 type alias SortOutput =
     { items : List Item
-    , animation : List (KeyFrame Item)
+    , animation : List AnimationFrame
     }
 
 
-keyFrames : SortOutput -> List (KeyFrame Item)
-keyFrames o =
-    o.animation
+animationFrames : SortOutput -> List (List Item)
+animationFrames o =
+    List.map (\x -> x.items) o.animation
 
 
 insertionSort : List Item -> SortOutput
@@ -27,7 +29,7 @@ insertionSortHelper : List Item -> List Item -> SortOutput
 insertionSortHelper list sorted =
     case list of
         [] ->
-            SortOutput sorted [ sorted ]
+            SortOutput sorted [ AnimationFrame sorted 0 ]
 
         x :: xs ->
             let
@@ -56,17 +58,17 @@ insert x list rest =
                     { y | color = "red" }
             in
             if x.value <= y.value then
-                SortOutput (x :: y :: ys) [ rest ++ (indicatedX :: indicatedY :: ys) ]
+                SortOutput (x :: y :: ys) [ AnimationFrame (rest ++ (indicatedX :: indicatedY :: ys)) 0 ]
 
             else
                 let
                     inserted =
                         insert x ys (rest ++ [ y ])
                 in
-                SortOutput (y :: inserted.items) ((rest ++ indicatedX :: indicatedY :: ys) :: inserted.animation)
+                SortOutput (y :: inserted.items) (AnimationFrame (rest ++ indicatedX :: indicatedY :: ys) 0 :: inserted.animation)
 
         [] ->
-            SortOutput [ x ] [ rest ++ [ x ] ]
+            SortOutput [ x ] [ AnimationFrame (rest ++ [ x ]) 0 ]
 
 
 mergeSort : List Item -> SortOutput
@@ -81,7 +83,7 @@ mergeSortHelper list prevLeft prevRight =
             SortOutput [] []
 
         [ x ] ->
-            SortOutput list [ prevLeft ++ list ++ prevRight ]
+            SortOutput list [ AnimationFrame (prevLeft ++ list ++ prevRight) 0 ]
 
         _ ->
             let
@@ -124,12 +126,12 @@ merge : List Item -> List Item -> List Item -> List Item -> List Item -> SortOut
 merge left right sorted prevLeft prevRight =
     case left of
         [] ->
-            SortOutput (sorted ++ right) [ prevLeft ++ sorted ++ right ++ prevRight ]
+            SortOutput (sorted ++ right) [ AnimationFrame (prevLeft ++ sorted ++ right ++ prevRight) 0 ]
 
         x :: xs ->
             case right of
                 [] ->
-                    SortOutput (sorted ++ left) [ prevLeft ++ sorted ++ left ++ prevRight ]
+                    SortOutput (sorted ++ left) [ AnimationFrame (prevLeft ++ sorted ++ left ++ prevRight) 0 ]
 
                 y :: ys ->
                     let
@@ -144,21 +146,21 @@ merge left right sorted prevLeft prevRight =
                             merged =
                                 merge xs right (sorted ++ [ x ]) prevLeft prevRight
                         in
-                        SortOutput merged.items ([ prevLeft ++ sorted ++ [ indicatedX ] ++ xs ++ indicatedY :: ys ++ prevRight ] ++ merged.animation)
+                        SortOutput merged.items (AnimationFrame (prevLeft ++ sorted ++ [ indicatedX ] ++ xs ++ indicatedY :: ys ++ prevRight) 0 :: merged.animation)
 
                     else
                         let
                             merged =
                                 merge left ys (sorted ++ [ y ]) prevLeft prevRight
                         in
-                        SortOutput merged.items ([ prevLeft ++ sorted ++ [ indicatedY ] ++ indicatedX :: xs ++ ys ++ prevRight ] ++ merged.animation)
+                        SortOutput merged.items (AnimationFrame (prevLeft ++ sorted ++ [ indicatedY ] ++ indicatedX :: xs ++ ys ++ prevRight) 0 :: merged.animation)
 
 
-filter : Item -> List Item -> ( List Item, List Item, List (KeyFrame Item) )
+filter : Item -> List Item -> ( List Item, List Item, List AnimationFrame )
 filter item list =
     case list of
         [] ->
-            ( [], [], [ [ item ] ] )
+            ( [], [], [ AnimationFrame [ item ] 0 ] )
 
         x :: xs ->
             let
@@ -166,10 +168,10 @@ filter item list =
                     filter item xs
             in
             if x.value <= item.value then
-                ( l ++ [ x ], h, List.map (\n -> n ++ [ x ]) lowerHigherLog ++ [ l ++ [ { x | color = "red" } ] ++ { item | color = "blue" } :: h ] )
+                ( l ++ [ x ], h, List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ [ { x | color = "red" } ] ++ { item | color = "blue" } :: h) 0 ] )
 
             else
-                ( l, h ++ [ x ], List.map (\n -> n ++ [ x ]) lowerHigherLog ++ [ l ++ { item | color = "blue" } :: h ++ [ { x | color = "red" } ] ] )
+                ( l, h ++ [ x ], List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ { item | color = "blue" } :: h ++ [ { x | color = "red" } ]) 0 ] )
 
 
 quickSort : List Item -> SortOutput
@@ -191,9 +193,9 @@ quickSort list =
 
                 frame =
                     lowerHigherLog
-                        ++ List.map (\l -> l ++ [ x ] ++ higher) lowerSorted.animation
-                        ++ List.map (\h -> lowerSorted.items ++ [ x ] ++ h) higherSorted.animation
-                        ++ [ lowerSorted.items ++ [ x ] ++ higherSorted.items ]
+                        ++ List.map (\l -> { l | items = l.items ++ [ x ] ++ higher }) lowerSorted.animation
+                        ++ List.map (\h -> { h | items = lowerSorted.items ++ [ x ] ++ h.items }) higherSorted.animation
+                        ++ [ AnimationFrame (lowerSorted.items ++ [ x ] ++ higherSorted.items) 0 ]
             in
             SortOutput (lowerSorted.items ++ [ x ] ++ higherSorted.items) frame
 
@@ -203,7 +205,7 @@ bubbleSort list =
     bubbleSortHelper (List.length list) False [] [] list
 
 
-bubbleSortHelper : Int -> Bool -> List (KeyFrame Item) -> List Item -> List Item -> SortOutput
+bubbleSortHelper : Int -> Bool -> List AnimationFrame -> List Item -> List Item -> SortOutput
 bubbleSortHelper n swapped frames sorted list =
     if List.length sorted < n - 1 then
         case list of
@@ -214,29 +216,37 @@ bubbleSortHelper n swapped frames sorted list =
 
                     indicatedY =
                         { y | color = "red" }
+
+                    newFrames =
+                        frames
+                            ++ [ AnimationFrame (sorted ++ [ indicatedY ] ++ (indicatedX :: xs)) 0 ]
                 in
                 if x.value > y.value then
-                    bubbleSortHelper n True (frames ++ [ sorted ++ [ indicatedY ] ++ (indicatedX :: xs) ]) (sorted ++ [ y ]) (x :: xs)
+                    bubbleSortHelper n True newFrames (sorted ++ [ y ]) (x :: xs)
 
                 else
-                    bubbleSortHelper n swapped (frames ++ [ sorted ++ [ indicatedX ] ++ (indicatedY :: xs) ]) (sorted ++ [ x ]) (y :: xs)
+                    bubbleSortHelper n swapped (frames ++ [ AnimationFrame (sorted ++ [ indicatedX ] ++ (indicatedY :: xs)) 0 ]) (sorted ++ [ x ]) (y :: xs)
 
             x :: xs ->
                 let
                     indicatedX =
                         { x | color = "red" }
+
+                    newFrames =
+                        frames
+                            ++ [ AnimationFrame (sorted ++ [ indicatedX ] ++ xs) 0 ]
                 in
-                bubbleSortHelper n swapped (frames ++ [ sorted ++ [ indicatedX ] ++ xs ]) (sorted ++ [ x ]) xs
+                bubbleSortHelper n swapped newFrames (sorted ++ [ x ]) xs
 
             [] ->
                 if swapped then
                     bubbleSortHelper (n - 1) False frames [] sorted
 
                 else
-                    SortOutput sorted (frames ++ [ sorted ])
+                    SortOutput sorted (frames ++ [ AnimationFrame sorted 0 ])
 
     else if swapped then
         bubbleSortHelper (n - 1) False frames [] (sorted ++ list)
 
     else
-        SortOutput sorted (frames ++ [ sorted ++ list ])
+        SortOutput sorted (frames ++ [ AnimationFrame (sorted ++ list) 0 ])

@@ -8,7 +8,7 @@ import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
 import Random
-import Sort exposing (bubbleSort, insertionSort, keyFrames, mergeSort, quickSort)
+import Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, quickSort)
 import Styles exposing (..)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
@@ -180,16 +180,16 @@ update msg model =
         StartAnimation ->
             case model.sortAlgo of
                 MergeSort ->
-                    ( { model | state = Running, animationLog = mergeSort model.items |> keyFrames }, Cmd.none )
+                    ( { model | state = Running, animationLog = mergeSort model.items |> animationFrames }, Cmd.none )
 
                 QuickSort ->
-                    ( { model | state = Running, animationLog = quickSort model.items |> keyFrames }, Cmd.none )
+                    ( { model | state = Running, animationLog = quickSort model.items |> animationFrames }, Cmd.none )
 
                 BubbleSort ->
-                    ( { model | state = Running, animationLog = bubbleSort model.items |> keyFrames }, Cmd.none )
+                    ( { model | state = Running, animationLog = bubbleSort model.items |> animationFrames }, Cmd.none )
 
                 InsertionSort ->
-                    ( { model | state = Running, animationLog = insertionSort model.items |> keyFrames }, Cmd.none )
+                    ( { model | state = Running, animationLog = insertionSort model.items |> animationFrames }, Cmd.none )
 
         StopAnimation ->
             ( { model | state = Stopped }, Cmd.none )
