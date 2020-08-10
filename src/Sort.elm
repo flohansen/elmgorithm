@@ -156,10 +156,10 @@ filter item list =
                     filter item xs
             in
             if x.value <= item.value then
-                ( l ++ [ x ], h, List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ [ { x | color = "red" } ] ++ { item | color = "blue" } :: h) 1 ] )
+                ( l ++ [ x ], h, List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ [ { x | color = "red" } ] ++ { item | color = "red" } :: h) 1 ] )
 
             else
-                ( l, h ++ [ x ], List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ { item | color = "blue" } :: h ++ [ { x | color = "red" } ]) 1 ] )
+                ( l, h ++ [ x ], List.map (\n -> { n | items = n.items ++ [ x ] }) lowerHigherLog ++ [ AnimationFrame (l ++ { item | color = "red" } :: h ++ [ { x | color = "red" } ]) 1 ] )
 
 
 quickSort : List Item -> SortOutput
