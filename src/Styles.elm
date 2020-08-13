@@ -95,11 +95,3 @@ classContent model =
     , style "margin-left" (String.fromInt model.appInfo.drawerWidth ++ "px")
     , style "box-sizing" "border-box"
     ]
-
-
-classMenu : List (Html.Attribute msg)
-classMenu =
-    [ style "list-style" "none"
-    , style "padding" "0"
-    , style "margin-top" "64px"
-    ]

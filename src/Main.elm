@@ -4,6 +4,7 @@ import Browser
 import Color
 import Components.Button exposing (button)
 import Components.Fab exposing (fab)
+import Components.Menu exposing (menu)
 import Components.MenuItem exposing (menuItem)
 import Components.RangeBar exposing (rangeBar)
 import Components.Typography as Typography
@@ -114,7 +115,7 @@ view model =
             ]
         , div (classDrawer model)
             [ Typography.header model.palette model.appInfo.name
-            , ul classMenu
+            , menu
                 [ menuItem model.palette [ onClick (Navigate SortMenu) ] Filled.sort "Sortieralgorithmen"
                 ]
             ]
