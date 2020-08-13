@@ -130,7 +130,7 @@ view model =
                     , style "align-items" "center"
                     ]
                     [ dot "red"
-                    , "Verglichende Elemente" |> typography Subheader
+                    , "Verglichene Elemente" |> typography Subheader
                     ]
                 , div
                     [ style "display" "flex"
