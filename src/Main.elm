@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Color
+import Components.Fab exposing (fab)
 import Components.RangeBar exposing (rangeBar)
 import Components.Typography as Typography
 import Html exposing (Html, a, button, div, input, li, option, p, select, span, text, ul)
@@ -63,10 +64,10 @@ startStopButton : Model -> Html Msg
 startStopButton model =
     case model.state of
         Running ->
-            button (onClick StopAnimation :: classFab) [ Filled.stop 24 (Color <| Color.rgb 255 255 255) ]
+            fab [ onClick StopAnimation ] [ Filled.stop 24 (Color <| Color.rgb 255 255 255) ]
 
         Stopped ->
-            button (onClick StartAnimation :: classFab) [ Filled.play_arrow 24 (Color <| Color.rgb 255 255 255) ]
+            fab [ onClick StartAnimation ] [ Filled.play_arrow 24 (Color <| Color.rgb 255 255 255) ]
 
 
 sortingSettingsView : Model -> Html Msg
