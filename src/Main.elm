@@ -38,12 +38,16 @@ init _ =
             , appBarHeight = 60
             , currentMenuSelection = SortMenu
             }
+      , animationInfo =
+            { speed = 16
+            , numberFrames = 0
+            , animation = []
+            , comparisons = 0
+            }
       , state = Stopped
       , items = []
       , numItems = 100
-      , animationLog = []
       , algorithm = mergeSort
-      , comparisons = 0
       }
     , Random.generate NewValues (listGenerator 100)
     )
@@ -130,7 +134,7 @@ view model =
                     , style "align-items" "center"
                     ]
                     [ "Vergleiche:" |> typography Subheader
-                    , model.comparisons |> String.fromInt |> typography Subheader
+                    , model.animationInfo.comparisons |> String.fromInt |> typography Subheader
                     ]
                 ]
             , svg
@@ -208,10 +212,21 @@ update msg model =
             ( { model | algorithm = algo }, Cmd.none )
 
         StartAnimation ->
+            let
+                animation =
+                    model.items |> model.algorithm |> animationFrames
+
+                numberFrames =
+                    List.length animation
+            in
             ( { model
                 | state = Running
-                , comparisons = 0
-                , animationLog = model.items |> model.algorithm |> animationFrames
+                , animationInfo =
+                    { speed = model.animationInfo.speed
+                    , numberFrames = numberFrames
+                    , animation = animation
+                    , comparisons = 0
+                    }
               }
             , Cmd.none
             )
@@ -226,18 +241,22 @@ update msg model =
         Tick ->
             let
                 frame =
-                    model.animationLog |> List.head
+                    model.animationInfo.animation |> List.head
 
-                newAnimationLog =
-                    model.animationLog |> List.tail |> Maybe.withDefault []
+                newAnimation =
+                    model.animationInfo.animation |> List.tail |> Maybe.withDefault []
             in
             case frame of
                 Just f ->
                     if model.state == Running then
                         ( { model
                             | items = f.items
-                            , animationLog = newAnimationLog
-                            , comparisons = model.comparisons + f.comparisons
+                            , animationInfo =
+                                { speed = model.animationInfo.speed
+                                , numberFrames = model.animationInfo.numberFrames
+                                , animation = newAnimation
+                                , comparisons = model.animationInfo.comparisons + f.comparisons
+                                }
                           }
                         , Cmd.none
                         )
@@ -261,7 +280,11 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 50 (\_ -> Tick)
+    let
+        dt =
+            model.animationInfo.speed * 1000.0 / toFloat model.animationInfo.numberFrames
+    in
+    Time.every dt (\_ -> Tick)
 
 
 main : Program () Model Msg
