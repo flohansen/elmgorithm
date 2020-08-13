@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Color
+import Components.RangeBar exposing (rangeBar)
 import Html exposing (Html, a, button, div, input, li, option, p, select, span, text, ul)
 import Html.Attributes exposing (href, style, value)
 import Html.Events exposing (onClick, onInput)
@@ -38,12 +39,18 @@ init _ =
             , appBarHeight = 60
             , currentMenuSelection = SortMenu
             }
+      , animationInfo =
+            { speed = 16
+            , minSpeed = 200
+            , maxSpeed = 16
+            , numberFrames = 0
+            , animation = []
+            , comparisons = 0
+            }
       , state = Stopped
       , items = []
       , numItems = 100
-      , animationLog = []
       , algorithm = mergeSort
-      , comparisons = 0
       }
     , Random.generate NewValues (listGenerator 100)
     )
@@ -130,7 +137,7 @@ view model =
                     , style "align-items" "center"
                     ]
                     [ "Vergleiche:" |> typography Subheader
-                    , model.comparisons |> String.fromInt |> typography Subheader
+                    , model.animationInfo.comparisons |> String.fromInt |> typography Subheader
                     ]
                 ]
             , svg
@@ -140,6 +147,7 @@ view model =
                 , viewBox "0 0 1 1"
                 ]
                 (itemsToSvg model.items 0.001)
+            , rangeBar
             ]
         ]
 
@@ -207,11 +215,47 @@ update msg model =
             in
             ( { model | algorithm = algo }, Cmd.none )
 
+        ChangeAnimationSpeed value ->
+            let
+                perc =
+                    (String.toFloat value |> Maybe.withDefault 0) / 100.0
+
+                speed =
+                    (model.animationInfo.maxSpeed - model.animationInfo.minSpeed)
+                        * perc
+                        + model.animationInfo.minSpeed
+            in
+            ( { model
+                | animationInfo =
+                    { speed = speed
+                    , minSpeed = model.animationInfo.minSpeed
+                    , maxSpeed = model.animationInfo.maxSpeed
+                    , numberFrames = model.animationInfo.numberFrames
+                    , animation = model.animationInfo.animation
+                    , comparisons = model.animationInfo.comparisons
+                    }
+              }
+            , Cmd.none
+            )
+
         StartAnimation ->
+            let
+                animation =
+                    model.items |> model.algorithm |> animationFrames
+
+                numberFrames =
+                    List.length animation
+            in
             ( { model
                 | state = Running
-                , comparisons = 0
-                , animationLog = model.items |> model.algorithm |> animationFrames
+                , animationInfo =
+                    { speed = model.animationInfo.speed
+                    , minSpeed = model.animationInfo.minSpeed
+                    , maxSpeed = model.animationInfo.maxSpeed
+                    , numberFrames = numberFrames
+                    , animation = animation
+                    , comparisons = 0
+                    }
               }
             , Cmd.none
             )
@@ -226,18 +270,24 @@ update msg model =
         Tick ->
             let
                 frame =
-                    model.animationLog |> List.head
+                    model.animationInfo.animation |> List.head
 
-                newAnimationLog =
-                    model.animationLog |> List.tail |> Maybe.withDefault []
+                newAnimation =
+                    model.animationInfo.animation |> List.tail |> Maybe.withDefault []
             in
             case frame of
                 Just f ->
                     if model.state == Running then
                         ( { model
                             | items = f.items
-                            , animationLog = newAnimationLog
-                            , comparisons = model.comparisons + f.comparisons
+                            , animationInfo =
+                                { speed = model.animationInfo.speed
+                                , minSpeed = model.animationInfo.minSpeed
+                                , maxSpeed = model.animationInfo.maxSpeed
+                                , numberFrames = model.animationInfo.numberFrames
+                                , animation = newAnimation
+                                , comparisons = model.animationInfo.comparisons + f.comparisons
+                                }
                           }
                         , Cmd.none
                         )
@@ -261,7 +311,11 @@ update msg model =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 50 (\_ -> Tick)
+    let
+        dt =
+            model.animationInfo.speed * 1000.0 / toFloat model.animationInfo.numberFrames
+    in
+    Time.every dt (\_ -> Tick)
 
 
 main : Program () Model Msg
