@@ -1,16 +1,7 @@
-module Components.Typography exposing (TypographyType(..), typography)
+module Components.Typography exposing (body, button, caption, header, label, subheader)
 
 import Html exposing (Html, p, text)
 import Html.Attributes exposing (style)
-
-
-type TypographyType
-    = Header
-    | Body
-    | Label
-    | Button
-    | Caption
-    | Subheader
 
 
 classTypo : List (Html.Attribute msg)
@@ -80,23 +71,31 @@ classTypoSubheader =
            ]
 
 
-typography : TypographyType -> String -> Html msg
-typography typoType str =
-    case typoType of
-        Header ->
-            p classTypoHeader [ text str ]
+header : String -> Html msg
+header str =
+    p classTypoHeader [ text str ]
 
-        Body ->
-            p classTypoBody [ text str ]
 
-        Label ->
-            p classTypoLabel [ text str ]
+body : String -> Html msg
+body str =
+    p classTypoBody [ text str ]
 
-        Button ->
-            p classTypoButton [ text str ]
 
-        Caption ->
-            p classTypoCaption [ text str ]
+label : String -> Html msg
+label str =
+    p classTypoLabel [ text str ]
 
-        Subheader ->
-            p classTypoSubheader [ text str ]
+
+button : String -> Html msg
+button str =
+    p classTypoButton [ text str ]
+
+
+caption : String -> Html msg
+caption str =
+    p classTypoCaption [ text str ]
+
+
+subheader : String -> Html msg
+subheader str =
+    p classTypoSubheader [ text str ]

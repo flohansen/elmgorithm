@@ -3,7 +3,7 @@ module Main exposing (..)
 import Browser
 import Color
 import Components.RangeBar exposing (rangeBar)
-import Components.Typography exposing (TypographyType(..), typography)
+import Components.Typography as Typography
 import Html exposing (Html, a, button, div, input, li, option, p, select, span, text, ul)
 import Html.Attributes exposing (href, style, value)
 import Html.Events exposing (onClick, onInput)
@@ -73,9 +73,9 @@ sortingSettingsView : Model -> Html Msg
 sortingSettingsView model =
     div []
         [ startStopButton model
-        , typography Caption "Einstellungen"
+        , Typography.caption "Einstellungen"
         , div classRow
-            [ typography Label "Algorithmus"
+            [ Typography.label "Algorithmus"
             , select (onInput ChangeSortAlgo :: classRowData)
                 [ option (value "mergeSort" :: classSelectOption) [ text "Merge Sort" ]
                 , option (value "bubbleSort" :: classSelectOption) [ text "Bubble Sort" ]
@@ -84,10 +84,10 @@ sortingSettingsView model =
                 ]
             ]
         , div classRow
-            [ typography Label "Elemente"
+            [ Typography.label "Elemente"
             , input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
             ]
-        , button (onClick GenValues :: classButton) [ typography Button "Neue Werte" ]
+        , button (onClick GenValues :: classButton) [ Typography.button "Neue Werte" ]
         ]
 
 
@@ -107,10 +107,10 @@ view : Model -> Html Msg
 view model =
     div classApp
         [ div (classAppBar model)
-            [ typography Header (menuItemName model.appInfo.currentMenuSelection)
+            [ Typography.header (menuItemName model.appInfo.currentMenuSelection)
             ]
         , div (classDrawer model)
-            [ typography Header model.appInfo.name
+            [ Typography.header model.appInfo.name
             , ul classMenu
                 [ li []
                     [ button
@@ -118,7 +118,7 @@ view model =
                             :: classMenuItem
                         )
                         [ span classMenuItemIcon [ Filled.sort 24 (Color <| Color.rgb 255 255 255) ]
-                        , typography Body "Sortieralgorithmen"
+                        , Typography.body "Sortieralgorithmen"
                         ]
                     ]
                 ]
@@ -133,14 +133,14 @@ view model =
                     , style "align-items" "center"
                     ]
                     [ dot "red"
-                    , "Verglichene Elemente" |> typography Subheader
+                    , Typography.subheader "Verglichene Elemente"
                     ]
                 , div
                     [ style "display" "flex"
                     , style "align-items" "center"
                     ]
-                    [ "Vergleiche:" |> typography Subheader
-                    , model.animationInfo.comparisons |> String.fromInt |> typography Subheader
+                    [ Typography.subheader "Vergleiche:"
+                    , model.animationInfo.comparisons |> String.fromInt |> Typography.subheader
                     ]
                 ]
             , svg

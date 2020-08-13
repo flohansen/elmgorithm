@@ -1,6 +1,6 @@
 module Components.RangeBar exposing (rangeBar)
 
-import Components.Typography exposing (TypographyType(..), typography)
+import Components.Typography as Typography
 import Html exposing (Html, div, input, label, text)
 import Html.Attributes exposing (style, type_)
 import Html.Events exposing (onInput)
@@ -23,7 +23,7 @@ rangeBar =
         , style "border-top-right-radius" "20px"
         , style "box-shadow" "0 0 24px rgba(0, 0, 0, 0.15)"
         ]
-        [ label [] [ typography Label "Animationsgeschwindigkeit" ]
+        [ label [] [ Typography.label "Animationsgeschwindigkeit" ]
         , input
             [ type_ "range"
             , Html.Attributes.min "0"
