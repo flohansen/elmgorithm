@@ -3,11 +3,13 @@ module Main exposing (..)
 import Browser
 import Color
 import Components.RangeBar exposing (rangeBar)
+import Components.Typography exposing (TypographyType(..), typography)
 import Html exposing (Html, a, button, div, input, li, option, p, select, span, text, ul)
 import Html.Attributes exposing (href, style, value)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
+import Palette
 import Random
 import Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, quickSort)
 import Styles exposing (..)
@@ -47,6 +49,7 @@ init _ =
             , animation = []
             , comparisons = 0
             }
+      , palette = Palette.dark
       , state = Stopped
       , items = []
       , numItems = 100
@@ -224,19 +227,14 @@ update msg model =
                     (model.animationInfo.maxSpeed - model.animationInfo.minSpeed)
                         * perc
                         + model.animationInfo.minSpeed
+
+                animationInfo =
+                    model.animationInfo
+
+                newAnimationInfo =
+                    { animationInfo | speed = speed }
             in
-            ( { model
-                | animationInfo =
-                    { speed = speed
-                    , minSpeed = model.animationInfo.minSpeed
-                    , maxSpeed = model.animationInfo.maxSpeed
-                    , numberFrames = model.animationInfo.numberFrames
-                    , animation = model.animationInfo.animation
-                    , comparisons = model.animationInfo.comparisons
-                    }
-              }
-            , Cmd.none
-            )
+            ( { model | animationInfo = newAnimationInfo }, Cmd.none )
 
         StartAnimation ->
             let
@@ -245,20 +243,18 @@ update msg model =
 
                 numberFrames =
                     List.length animation
-            in
-            ( { model
-                | state = Running
-                , animationInfo =
-                    { speed = model.animationInfo.speed
-                    , minSpeed = model.animationInfo.minSpeed
-                    , maxSpeed = model.animationInfo.maxSpeed
-                    , numberFrames = numberFrames
-                    , animation = animation
-                    , comparisons = 0
+
+                animationInfo =
+                    model.animationInfo
+
+                newAnimationInfo =
+                    { animationInfo
+                        | numberFrames = numberFrames
+                        , animation = animation
+                        , comparisons = 0
                     }
-              }
-            , Cmd.none
-            )
+            in
+            ( { model | state = Running, animationInfo = newAnimationInfo }, Cmd.none )
 
         StopAnimation ->
             ( { model

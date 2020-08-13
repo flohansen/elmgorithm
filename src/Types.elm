@@ -1,5 +1,7 @@
 module Types exposing (..)
 
+import Palette exposing (Palette)
+
 
 type Msg
     = None
@@ -56,6 +58,7 @@ type alias AnimationInfo =
 
 type alias Model =
     { appInfo : AppInfo
+    , palette : Palette
     , state : AnimationState
     , items : List Item
     , numItems : Int

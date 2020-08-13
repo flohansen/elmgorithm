@@ -1,9 +1,9 @@
 module Components.RangeBar exposing (rangeBar)
 
+import Components.Typography exposing (TypographyType(..), typography)
 import Html exposing (Html, div, input, label, text)
 import Html.Attributes exposing (style, type_)
 import Html.Events exposing (onInput)
-import Styles exposing (TypographyType(..), typography)
 import Types exposing (Msg(..))
 
 
