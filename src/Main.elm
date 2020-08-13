@@ -4,10 +4,10 @@ import Browser
 import Color
 import Components.AnimationPreview exposing (animationPreview)
 import Components.Button exposing (button)
-import Components.Fab exposing (fab)
 import Components.Menu exposing (menu)
 import Components.MenuItem exposing (menuItem)
 import Components.RangeBar exposing (rangeBar)
+import Components.SortSettings exposing (sortSettings)
 import Components.StatisticsBar exposing (statisticsBar)
 import Components.Typography as Typography
 import Html exposing (Html, a, div, input, li, option, p, select, span, text, ul)
@@ -63,38 +63,6 @@ init _ =
     )
 
 
-startStopButton : Model -> Html Msg
-startStopButton model =
-    case model.state of
-        Running ->
-            fab model.palette [ onClick StopAnimation ] Filled.stop
-
-        Stopped ->
-            fab model.palette [ onClick StartAnimation ] Filled.play_arrow
-
-
-sortingSettingsView : Model -> Html Msg
-sortingSettingsView model =
-    div []
-        [ startStopButton model
-        , Typography.caption model.palette "Einstellungen"
-        , div classRow
-            [ Typography.label model.palette "Algorithmus"
-            , select (onInput ChangeSortAlgo :: classRowData)
-                [ option (value "mergeSort" :: classSelectOption) [ text "Merge Sort" ]
-                , option (value "bubbleSort" :: classSelectOption) [ text "Bubble Sort" ]
-                , option (value "quickSort" :: classSelectOption) [ text "Quick Sort" ]
-                , option (value "insertionSort" :: classSelectOption) [ text "Insertion Sort" ]
-                ]
-            ]
-        , div classRow
-            [ Typography.label model.palette "Elemente"
-            , input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
-            ]
-        , button model.palette [ onClick GenValues ] "Neue Werte"
-        ]
-
-
 view : Model -> Html Msg
 view model =
     div classApp
@@ -108,7 +76,7 @@ view model =
                 ]
             ]
         , div (classDrawerSettings model)
-            [ sortingSettingsView model
+            [ sortSettings model
             ]
         , div (classContent model)
             [ statisticsBar model

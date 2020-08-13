@@ -56,30 +56,6 @@ classDrawerSettings model =
     ]
 
 
-classRow : List (Html.Attribute msg)
-classRow =
-    [ style "display" "flex"
-    , style "flex-shrink" "1"
-    , style "align-items" "center"
-    , style "width" "100%"
-    , style "margin-bottom" "16px"
-    ]
-
-
-classRowData : List (Html.Attribute msg)
-classRowData =
-    [ style "flex-grow" "1"
-    , style "min-width" "0"
-    , style "border" "0"
-    , style "background" "rgba(255, 255, 255, 0.15)"
-    , style "border-radius" "3px"
-    , style "padding" "5px 7px"
-    , style "font-size" "14px"
-    , style "color" "#fff"
-    , style "letter-spacing" "0.04em"
-    ]
-
-
 classSelectOption : List (Html.Attribute msg)
 classSelectOption =
     [ style "background" "#000"
