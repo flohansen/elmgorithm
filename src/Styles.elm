@@ -86,20 +86,6 @@ classSelectOption =
     ]
 
 
-classButton : List (Html.Attribute msg)
-classButton =
-    [ style "display" "block"
-    , style "width" "100%"
-    , style "border-radius" "3px"
-    , style "border" "0"
-    , style "padding" "7px 0"
-    , style "outline" "none"
-    , style "cursor" "pointer"
-    , style "color" "#fff"
-    , style "background" "#DC2865"
-    ]
-
-
 classContent : Model -> List (Html.Attribute msg)
 classContent model =
     [ style "width" ("calc(100vw - " ++ String.fromInt (model.appInfo.drawerWidth + model.appInfo.drawerSettingsWidth) ++ "px)")

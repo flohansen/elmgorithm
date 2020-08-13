@@ -2,10 +2,11 @@ module Main exposing (..)
 
 import Browser
 import Color
+import Components.Button exposing (button)
 import Components.Fab exposing (fab)
 import Components.RangeBar exposing (rangeBar)
 import Components.Typography as Typography
-import Html exposing (Html, a, button, div, input, li, option, p, select, span, text, ul)
+import Html exposing (Html, a, div, input, li, option, p, select, span, text, ul)
 import Html.Attributes exposing (href, style, value)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
@@ -88,7 +89,7 @@ sortingSettingsView model =
             [ Typography.label model.palette "Elemente"
             , input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
             ]
-        , button (onClick GenValues :: classButton) [ Typography.button model.palette "Neue Werte" ]
+        , button model.palette [ onClick GenValues ] [ Typography.button model.palette "Neue Werte" ]
         ]
 
 
@@ -114,7 +115,7 @@ view model =
             [ Typography.header model.palette model.appInfo.name
             , ul classMenu
                 [ li []
-                    [ button
+                    [ Html.button
                         (onClick (Navigate SortMenu)
                             :: classMenuItem
                         )
