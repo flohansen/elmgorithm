@@ -89,7 +89,7 @@ sortingSettingsView model =
             [ Typography.label model.palette "Elemente"
             , input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
             ]
-        , button model.palette [ onClick GenValues ] [ Typography.button model.palette "Neue Werte" ]
+        , button model.palette [ onClick GenValues ] "Neue Werte"
         ]
 
 
