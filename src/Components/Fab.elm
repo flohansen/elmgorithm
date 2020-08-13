@@ -1,13 +1,15 @@
 module Components.Fab exposing (fab)
 
+import Color
 import Html exposing (Html, button)
 import Html.Attributes exposing (style)
+import Material.Icons.Types exposing (Coloring(..), Icon)
 import Palette exposing (Palette)
 import Types exposing (Msg)
 
 
-fab : Palette -> List (Html.Attribute Msg) -> List (Html Msg) -> Html Msg
-fab p props l =
+fab : Palette -> List (Html.Attribute Msg) -> Icon Msg -> Html Msg
+fab p props icon =
     button
         ([ style "border-radius" "50%"
          , style "border" "0"
@@ -22,4 +24,4 @@ fab p props l =
          ]
             ++ props
         )
-        l
+        [ icon 24 (Color <| Color.rgb 255 255 255) ]
