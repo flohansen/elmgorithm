@@ -64,10 +64,10 @@ startStopButton : Model -> Html Msg
 startStopButton model =
     case model.state of
         Running ->
-            fab [ onClick StopAnimation ] [ Filled.stop 24 (Color <| Color.rgb 255 255 255) ]
+            fab model.palette [ onClick StopAnimation ] [ Filled.stop 24 (Color <| Color.rgb 255 255 255) ]
 
         Stopped ->
-            fab [ onClick StartAnimation ] [ Filled.play_arrow 24 (Color <| Color.rgb 255 255 255) ]
+            fab model.palette [ onClick StartAnimation ] [ Filled.play_arrow 24 (Color <| Color.rgb 255 255 255) ]
 
 
 sortingSettingsView : Model -> Html Msg
