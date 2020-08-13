@@ -73,9 +73,9 @@ sortingSettingsView : Model -> Html Msg
 sortingSettingsView model =
     div []
         [ startStopButton model
-        , Typography.caption "Einstellungen"
+        , Typography.caption model.palette "Einstellungen"
         , div classRow
-            [ Typography.label "Algorithmus"
+            [ Typography.label model.palette "Algorithmus"
             , select (onInput ChangeSortAlgo :: classRowData)
                 [ option (value "mergeSort" :: classSelectOption) [ text "Merge Sort" ]
                 , option (value "bubbleSort" :: classSelectOption) [ text "Bubble Sort" ]
@@ -84,10 +84,10 @@ sortingSettingsView model =
                 ]
             ]
         , div classRow
-            [ Typography.label "Elemente"
+            [ Typography.label model.palette "Elemente"
             , input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
             ]
-        , button (onClick GenValues :: classButton) [ Typography.button "Neue Werte" ]
+        , button (onClick GenValues :: classButton) [ Typography.button model.palette "Neue Werte" ]
         ]
 
 
@@ -107,10 +107,10 @@ view : Model -> Html Msg
 view model =
     div classApp
         [ div (classAppBar model)
-            [ Typography.header (menuItemName model.appInfo.currentMenuSelection)
+            [ Typography.header model.palette (menuItemName model.appInfo.currentMenuSelection)
             ]
         , div (classDrawer model)
-            [ Typography.header model.appInfo.name
+            [ Typography.header model.palette model.appInfo.name
             , ul classMenu
                 [ li []
                     [ button
@@ -118,7 +118,7 @@ view model =
                             :: classMenuItem
                         )
                         [ span classMenuItemIcon [ Filled.sort 24 (Color <| Color.rgb 255 255 255) ]
-                        , Typography.body "Sortieralgorithmen"
+                        , Typography.body model.palette "Sortieralgorithmen"
                         ]
                     ]
                 ]
@@ -133,14 +133,14 @@ view model =
                     , style "align-items" "center"
                     ]
                     [ dot "red"
-                    , Typography.subheader "Verglichene Elemente"
+                    , Typography.subheader model.palette "Verglichene Elemente"
                     ]
                 , div
                     [ style "display" "flex"
                     , style "align-items" "center"
                     ]
-                    [ Typography.subheader "Vergleiche:"
-                    , model.animationInfo.comparisons |> String.fromInt |> Typography.subheader
+                    [ Typography.subheader model.palette "Vergleiche:"
+                    , model.animationInfo.comparisons |> String.fromInt |> Typography.subheader model.palette
                     ]
                 ]
             , svg
@@ -150,7 +150,7 @@ view model =
                 , viewBox "0 0 1 1"
                 ]
                 (itemsToSvg model.items 0.001)
-            , rangeBar
+            , rangeBar model.palette
             ]
         ]
 

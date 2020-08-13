@@ -2,6 +2,7 @@ module Components.Typography exposing (body, button, caption, header, label, sub
 
 import Html exposing (Html, p, text)
 import Html.Attributes exposing (style)
+import Palette exposing (Palette)
 
 
 classTypo : List (Html.Attribute msg)
@@ -12,8 +13,8 @@ classTypo =
     ]
 
 
-classTypoHeader : List (Html.Attribute msg)
-classTypoHeader =
+classTypoHeader : Palette -> List (Html.Attribute msg)
+classTypoHeader p =
     classTypo
         ++ [ style "font-weight" "700"
            , style "font-size" "20px"
@@ -21,8 +22,8 @@ classTypoHeader =
            ]
 
 
-classTypoBody : List (Html.Attribute msg)
-classTypoBody =
+classTypoBody : Palette -> List (Html.Attribute msg)
+classTypoBody p =
     classTypo
         ++ [ style "font-weight" "400"
            , style "font-size" "16px"
@@ -30,8 +31,8 @@ classTypoBody =
            ]
 
 
-classTypoLabel : List (Html.Attribute msg)
-classTypoLabel =
+classTypoLabel : Palette -> List (Html.Attribute msg)
+classTypoLabel p =
     classTypo
         ++ [ style "flex" "0 1 auto"
            , style "margin-right" "16px"
@@ -41,8 +42,8 @@ classTypoLabel =
            ]
 
 
-classTypoButton : List (Html.Attribute msg)
-classTypoButton =
+classTypoButton : Palette -> List (Html.Attribute msg)
+classTypoButton p =
     classTypo
         ++ [ style "font-weight" "700"
            , style "font-size" "12px"
@@ -51,8 +52,8 @@ classTypoButton =
            ]
 
 
-classTypoCaption : List (Html.Attribute msg)
-classTypoCaption =
+classTypoCaption : Palette -> List (Html.Attribute msg)
+classTypoCaption p =
     classTypo
         ++ [ style "font-size" "12px"
            , style "letter-spacing" "0.18em"
@@ -62,8 +63,8 @@ classTypoCaption =
            ]
 
 
-classTypoSubheader : List (Html.Attribute msg)
-classTypoSubheader =
+classTypoSubheader : Palette -> List (Html.Attribute msg)
+classTypoSubheader p =
     classTypo
         ++ [ style "font-size" "14px"
            , style "color" "#A7A7A7"
@@ -71,31 +72,31 @@ classTypoSubheader =
            ]
 
 
-header : String -> Html msg
-header str =
-    p classTypoHeader [ text str ]
+header : Palette -> String -> Html msg
+header palette str =
+    p (classTypoHeader palette) [ text str ]
 
 
-body : String -> Html msg
-body str =
-    p classTypoBody [ text str ]
+body : Palette -> String -> Html msg
+body palette str =
+    p (classTypoBody palette) [ text str ]
 
 
-label : String -> Html msg
-label str =
-    p classTypoLabel [ text str ]
+label : Palette -> String -> Html msg
+label palette str =
+    p (classTypoLabel palette) [ text str ]
 
 
-button : String -> Html msg
-button str =
-    p classTypoButton [ text str ]
+button : Palette -> String -> Html msg
+button palette str =
+    p (classTypoButton palette) [ text str ]
 
 
-caption : String -> Html msg
-caption str =
-    p classTypoCaption [ text str ]
+caption : Palette -> String -> Html msg
+caption palette str =
+    p (classTypoCaption palette) [ text str ]
 
 
-subheader : String -> Html msg
-subheader str =
-    p classTypoSubheader [ text str ]
+subheader : Palette -> String -> Html msg
+subheader palette str =
+    p (classTypoSubheader palette) [ text str ]
