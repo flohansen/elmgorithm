@@ -103,21 +103,3 @@ classMenu =
     , style "padding" "0"
     , style "margin-top" "64px"
     ]
-
-
-classMenuItem : List (Html.Attribute msg)
-classMenuItem =
-    [ style "display" "flex"
-    , style "align-items" "center"
-    , style "background" "transparent"
-    , style "border" "none"
-    , style "outline" "none"
-    , style "cursor" "pointer"
-    , style "width" "100%"
-    ]
-
-
-classMenuItemIcon : List (Html.Attribute msg)
-classMenuItemIcon =
-    [ style "margin-right" "24px"
-    ]
