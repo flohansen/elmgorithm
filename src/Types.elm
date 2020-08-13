@@ -11,6 +11,7 @@ type Msg
     | StopAnimation
     | Tick
     | ChangeSortAlgo String
+    | ChangeAnimationSpeed String
 
 
 type Menu
@@ -45,6 +46,8 @@ type alias AppInfo =
 
 type alias AnimationInfo =
     { speed : Float
+    , minSpeed : Float
+    , maxSpeed : Float
     , numberFrames : Int
     , animation : List AnimationFrame
     , comparisons : Int

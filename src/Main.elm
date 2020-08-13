@@ -2,6 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Color
+import Components.RangeBar exposing (rangeBar)
 import Html exposing (Html, a, button, div, input, li, option, p, select, span, text, ul)
 import Html.Attributes exposing (href, style, value)
 import Html.Events exposing (onClick, onInput)
@@ -40,6 +41,8 @@ init _ =
             }
       , animationInfo =
             { speed = 16
+            , minSpeed = 200
+            , maxSpeed = 16
             , numberFrames = 0
             , animation = []
             , comparisons = 0
@@ -144,6 +147,7 @@ view model =
                 , viewBox "0 0 1 1"
                 ]
                 (itemsToSvg model.items 0.001)
+            , rangeBar
             ]
         ]
 
@@ -211,6 +215,29 @@ update msg model =
             in
             ( { model | algorithm = algo }, Cmd.none )
 
+        ChangeAnimationSpeed value ->
+            let
+                perc =
+                    (String.toFloat value |> Maybe.withDefault 0) / 100.0
+
+                speed =
+                    (model.animationInfo.maxSpeed - model.animationInfo.minSpeed)
+                        * perc
+                        + model.animationInfo.minSpeed
+            in
+            ( { model
+                | animationInfo =
+                    { speed = speed
+                    , minSpeed = model.animationInfo.minSpeed
+                    , maxSpeed = model.animationInfo.maxSpeed
+                    , numberFrames = model.animationInfo.numberFrames
+                    , animation = model.animationInfo.animation
+                    , comparisons = model.animationInfo.comparisons
+                    }
+              }
+            , Cmd.none
+            )
+
         StartAnimation ->
             let
                 animation =
@@ -223,6 +250,8 @@ update msg model =
                 | state = Running
                 , animationInfo =
                     { speed = model.animationInfo.speed
+                    , minSpeed = model.animationInfo.minSpeed
+                    , maxSpeed = model.animationInfo.maxSpeed
                     , numberFrames = numberFrames
                     , animation = animation
                     , comparisons = 0
@@ -253,6 +282,8 @@ update msg model =
                             | items = f.items
                             , animationInfo =
                                 { speed = model.animationInfo.speed
+                                , minSpeed = model.animationInfo.minSpeed
+                                , maxSpeed = model.animationInfo.maxSpeed
                                 , numberFrames = model.animationInfo.numberFrames
                                 , animation = newAnimation
                                 , comparisons = model.animationInfo.comparisons + f.comparisons
