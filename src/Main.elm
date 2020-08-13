@@ -7,6 +7,7 @@ import Components.Fab exposing (fab)
 import Components.Menu exposing (menu)
 import Components.MenuItem exposing (menuItem)
 import Components.RangeBar exposing (rangeBar)
+import Components.StatisticsBar exposing (statisticsBar)
 import Components.Typography as Typography
 import Html exposing (Html, a, div, input, li, option, p, select, span, text, ul)
 import Html.Attributes exposing (href, style, value)
@@ -95,18 +96,6 @@ sortingSettingsView model =
         ]
 
 
-dot : String -> Html Msg
-dot color =
-    div
-        [ style "background" color
-        , style "width" "5px"
-        , style "height" "5px"
-        , style "border-radius" "50%"
-        , style "margin-right" "16px"
-        ]
-        []
-
-
 view : Model -> Html Msg
 view model =
     div classApp
@@ -123,22 +112,7 @@ view model =
             [ sortingSettingsView model
             ]
         , div (classContent model)
-            [ div [ style "height" "65px", style "display" "flex", style "padding" "0 24px", style "justify-content" "space-between" ]
-                [ div
-                    [ style "display" "flex"
-                    , style "align-items" "center"
-                    ]
-                    [ dot "red"
-                    , Typography.subheader model.palette "Verglichene Elemente"
-                    ]
-                , div
-                    [ style "display" "flex"
-                    , style "align-items" "center"
-                    ]
-                    [ Typography.subheader model.palette "Vergleiche:"
-                    , model.animationInfo.comparisons |> String.fromInt |> Typography.subheader model.palette
-                    ]
-                ]
+            [ statisticsBar model
             , svg
                 [ width "100%"
                 , style "height" "calc(100% - 65px)"
