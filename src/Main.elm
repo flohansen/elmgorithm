@@ -3,6 +3,7 @@ module Main exposing (..)
 import Browser
 import Color
 import Components.AnimationPreview exposing (animationPreview)
+import Components.AppBar exposing (appBar)
 import Components.Button exposing (button)
 import Components.Drawer exposing (drawer)
 import Components.Menu exposing (menu)
@@ -24,13 +25,6 @@ import Styles exposing (..)
 import Time
 import Tuple exposing (second)
 import Types exposing (AnimationFrame, AnimationState(..), Item, Menu(..), Model, Msg(..))
-
-
-menuItemName : Menu -> String
-menuItemName m =
-    case m of
-        SortMenu ->
-            "Sortieralgorithmen"
 
 
 listGenerator : Int -> Random.Generator (List Float)
@@ -68,9 +62,7 @@ init _ =
 view : Model -> Html Msg
 view model =
     div classApp
-        [ div (classAppBar model)
-            [ Typography.header model.palette (menuItemName model.appInfo.currentMenuSelection)
-            ]
+        [ appBar model
         , navigation model
         , drawer model
             [ sortSettings model

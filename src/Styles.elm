@@ -13,22 +13,6 @@ classApp =
     ]
 
 
-classAppBar : Model -> List (Html.Attribute msg)
-classAppBar model =
-    [ style "width" ("calc(100% - " ++ String.fromInt model.appInfo.drawerWidth ++ "px)")
-    , style "height" (String.fromInt model.appInfo.appBarHeight ++ "px")
-    , style "background" "#272727"
-    , style "margin-left" (String.fromInt model.appInfo.drawerWidth ++ "px")
-    , style "position" "fixed"
-    , style "top" "0"
-    , style "left" "0"
-    , style "display" "flex"
-    , style "align-items" "center"
-    , style "box-sizing" "border-box"
-    , style "padding" "0 24px"
-    ]
-
-
 classContent : Model -> List (Html.Attribute msg)
 classContent model =
     [ style "width" ("calc(100vw - " ++ String.fromInt (model.appInfo.drawerWidth + model.appInfo.drawerSettingsWidth) ++ "px)")
