@@ -6,6 +6,7 @@ import Components.AnimationPreview exposing (animationPreview)
 import Components.Button exposing (button)
 import Components.Menu exposing (menu)
 import Components.MenuItem exposing (menuItem)
+import Components.Navigation exposing (navigation)
 import Components.RangeBar exposing (rangeBar)
 import Components.SortSettings exposing (sortSettings)
 import Components.StatisticsBar exposing (statisticsBar)
@@ -69,12 +70,7 @@ view model =
         [ div (classAppBar model)
             [ Typography.header model.palette (menuItemName model.appInfo.currentMenuSelection)
             ]
-        , div (classDrawer model)
-            [ Typography.header model.palette model.appInfo.name
-            , menu
-                [ menuItem model.palette [ onClick (Navigate SortMenu) ] Filled.sort "Sortieralgorithmen"
-                ]
-            ]
+        , navigation model
         , div (classDrawerSettings model)
             [ sortSettings model
             ]
