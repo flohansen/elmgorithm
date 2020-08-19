@@ -4,12 +4,11 @@ import Components.Typography as Typography
 import Html exposing (Html, div, input, label, text)
 import Html.Attributes exposing (style, type_)
 import Html.Events exposing (onInput)
-import Palette exposing (Palette)
-import Types exposing (Msg(..))
+import Types exposing (Model, Msg(..))
 
 
-rangeBar : Palette -> Html Msg
-rangeBar palette =
+rangeBar : Model -> Html Msg
+rangeBar model =
     div
         [ style "display" "flex"
         , style "position" "absolute"
@@ -24,7 +23,7 @@ rangeBar palette =
         , style "border-top-right-radius" "20px"
         , style "box-shadow" "0 0 24px rgba(0, 0, 0, 0.15)"
         ]
-        [ label [] [ Typography.label palette "Animationsgeschwindigkeit" ]
+        [ label [] [ Typography.label model.palette "Animationsgeschwindigkeit" ]
         , input
             [ type_ "range"
             , Html.Attributes.min "0"

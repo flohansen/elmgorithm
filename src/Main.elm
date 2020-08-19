@@ -78,7 +78,7 @@ view model =
         , div (classContent model)
             [ statisticsBar model
             , animationPreview model
-            , rangeBar model.palette
+            , rangeBar model
             ]
         ]
 
