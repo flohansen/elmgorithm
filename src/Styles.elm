@@ -29,20 +29,6 @@ classAppBar model =
     ]
 
 
-classDrawerSettings : Model -> List (Html.Attribute msg)
-classDrawerSettings model =
-    [ style "width" (String.fromInt model.appInfo.drawerSettingsWidth ++ "px")
-    , style "height" "100vh"
-    , style "background" "#363636"
-    , style "position" "fixed"
-    , style "top" "0"
-    , style "right" "0"
-    , style "margin-top" (String.fromInt model.appInfo.appBarHeight ++ "px")
-    , style "padding" "24px"
-    , style "box-sizing" "border-box"
-    ]
-
-
 classContent : Model -> List (Html.Attribute msg)
 classContent model =
     [ style "width" ("calc(100vw - " ++ String.fromInt (model.appInfo.drawerWidth + model.appInfo.drawerSettingsWidth) ++ "px)")

@@ -4,6 +4,7 @@ import Browser
 import Color
 import Components.AnimationPreview exposing (animationPreview)
 import Components.Button exposing (button)
+import Components.Drawer exposing (drawer)
 import Components.Menu exposing (menu)
 import Components.MenuItem exposing (menuItem)
 import Components.Navigation exposing (navigation)
@@ -71,7 +72,7 @@ view model =
             [ Typography.header model.palette (menuItemName model.appInfo.currentMenuSelection)
             ]
         , navigation model
-        , div (classDrawerSettings model)
+        , drawer model
             [ sortSettings model
             ]
         , div (classContent model)
