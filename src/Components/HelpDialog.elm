@@ -3,6 +3,7 @@ module Components.HelpDialog exposing (helpDialog)
 import Components.Typography as Typography
 import Html exposing (Html)
 import Html.Attributes exposing (style)
+import Html.Events exposing (onClick)
 import Palette exposing (Palette)
 import Types exposing (Model, Msg(..))
 
@@ -30,16 +31,26 @@ helpDialog model =
         , style "left" "0"
         , style "width" "100%"
         , style "height" "100%"
-        , style "background" "rgba(0, 0, 0, 0.6)"
         , style "display" "flex"
         , style "justify-content" "center"
         , style "align-items" "center"
         ]
         [ Html.div
+            [ style "background" "rgba(0, 0, 0, 0.6)"
+            , style "width" "100%"
+            , style "height" "100%"
+            , style "position" "absolute"
+            , style "z-index" "0"
+            , onClick (ShowAlgorithmInfo False)
+            ]
+            []
+        , Html.div
             [ style "background" model.palette.backgroundCard
             , style "padding" "24px"
             , style "border-radius" "15px"
             , style "max-width" "600px"
+            , style "position" "relative"
+            , style "z-index" "1"
             ]
             [ Typography.cardHeader model.palette "Merge Sort"
             , vertSpacing 16

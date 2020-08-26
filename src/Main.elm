@@ -25,7 +25,7 @@ import Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, qui
 import Styles exposing (..)
 import Time
 import Tuple exposing (second)
-import Types exposing (AnimationFrame, AnimationState(..), Item, Menu(..), Model, Msg(..))
+import Types exposing (AnimationFrame, AnimationState(..), Item, Menu(..), Model, Msg(..), SortAlgorithm(..))
 
 
 listGenerator : Int -> Random.Generator (List Float)
@@ -55,6 +55,7 @@ init _ =
       , items = []
       , numItems = 100
       , algorithm = mergeSort
+      , algorithmType = MergeSort
       , showAlgorithmInfo = False
       }
     , Random.generate NewValues (listGenerator 100)
@@ -63,19 +64,28 @@ init _ =
 
 view : Model -> Html Msg
 view model =
-    div classApp
-        [ appBar model
-        , navigation model
-        , drawer model
-            [ sortSettings model
+    let
+        elements =
+            [ appBar model
+            , navigation model
+            , drawer model
+                [ sortSettings model
+                ]
+            , div (classContent model)
+                [ statisticsBar model
+                , animationPreview model
+                , rangeBar model
+                ]
             ]
-        , div (classContent model)
-            [ statisticsBar model
-            , animationPreview model
-            , rangeBar model
-            ]
-        , helpDialog model
-        ]
+
+        app =
+            if model.showAlgorithmInfo then
+                elements ++ [ helpDialog model ]
+
+            else
+                elements
+    in
+    div classApp app
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -99,24 +109,24 @@ update msg model =
 
         ChangeSortAlgo value ->
             let
-                algo =
+                ( func, algo ) =
                     case value of
                         "mergeSort" ->
-                            mergeSort
+                            ( mergeSort, MergeSort )
 
                         "quickSort" ->
-                            quickSort
+                            ( quickSort, QuickSort )
 
                         "bubbleSort" ->
-                            bubbleSort
+                            ( bubbleSort, BubbleSort )
 
                         "insertionSort" ->
-                            insertionSort
+                            ( insertionSort, InsertionSort )
 
                         _ ->
-                            mergeSort
+                            ( mergeSort, MergeSort )
             in
-            ( { model | algorithm = algo }, Cmd.none )
+            ( { model | algorithm = func, algorithmType = algo }, Cmd.none )
 
         ChangeAnimationSpeed value ->
             let
