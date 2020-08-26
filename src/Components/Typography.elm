@@ -1,4 +1,4 @@
-module Components.Typography exposing (body, button, caption, header, label, subheader)
+module Components.Typography exposing (body, button, caption, cardHeader, code, header, label, subheader)
 
 import Html exposing (Html, p, text)
 import Html.Attributes exposing (style)
@@ -22,12 +22,22 @@ classTypoHeader p =
            ]
 
 
+classTypoCardHeader : Palette -> List (Html.Attribute msg)
+classTypoCardHeader p =
+    classTypo
+        ++ [ style "font-weight" "700"
+           , style "font-size" "16px"
+           , style "color" "#ffffff"
+           ]
+
+
 classTypoBody : Palette -> List (Html.Attribute msg)
 classTypoBody p =
     classTypo
         ++ [ style "font-weight" "400"
-           , style "font-size" "16px"
-           , style "color" "#ffffff"
+           , style "font-size" "14px"
+           , style "color" "rgba(255, 255, 255, 0.6)"
+           , style "line-height" "1.5em"
            ]
 
 
@@ -37,8 +47,20 @@ classTypoLabel p =
         ++ [ style "flex" "0 1 auto"
            , style "margin-right" "16px"
            , style "font-size" "16px"
-           , style "color" "#A7A7A7"
+           , style "color" "#ffffff"
            , style "letter-spacing" "0.04em"
+           ]
+
+
+classTypoCode : Palette -> List (Html.Attribute msg)
+classTypoCode p =
+    classTypo
+        ++ [ style "flex" "0 1 auto"
+           , style "margin-right" "16px"
+           , style "font-size" "14px"
+           , style "color" "#ffffff"
+           , style "letter-spacing" "0.04em"
+           , style "font-family" "Courier New"
            ]
 
 
@@ -55,11 +77,10 @@ classTypoButton p =
 classTypoCaption : Palette -> List (Html.Attribute msg)
 classTypoCaption p =
     classTypo
-        ++ [ style "font-size" "12px"
-           , style "letter-spacing" "0.18em"
+        ++ [ style "font-size" "10px"
+           , style "letter-spacing" "0.15em"
            , style "text-transform" "uppercase"
-           , style "color" "#fff"
-           , style "margin-bottom" "24px"
+           , style "color" "rgba(255, 255, 255, 0.6)"
            ]
 
 
@@ -100,3 +121,13 @@ caption palette str =
 subheader : Palette -> String -> Html msg
 subheader palette str =
     p (classTypoSubheader palette) [ text str ]
+
+
+cardHeader : Palette -> String -> Html msg
+cardHeader palette str =
+    p (classTypoCardHeader palette) [ text str ]
+
+
+code : Palette -> String -> Html msg
+code palette str =
+    p (classTypoCode palette) [ text str ]

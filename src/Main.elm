@@ -6,6 +6,7 @@ import Components.AnimationPreview exposing (animationPreview)
 import Components.AppBar exposing (appBar)
 import Components.Button exposing (button)
 import Components.Drawer exposing (drawer)
+import Components.HelpDialog exposing (helpDialog)
 import Components.Menu exposing (menu)
 import Components.MenuItem exposing (menuItem)
 import Components.Navigation exposing (navigation)
@@ -73,6 +74,7 @@ view model =
             , animationPreview model
             , rangeBar model
             ]
+        , helpDialog model
         ]
 
 
