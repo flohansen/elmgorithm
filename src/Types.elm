@@ -14,6 +14,7 @@ type Msg
     | Tick
     | ChangeSortAlgo String
     | ChangeAnimationSpeed String
+    | ShowAlgorithmInfo Bool
 
 
 type Menu
@@ -63,8 +64,17 @@ type alias Model =
     , items : List Item
     , numItems : Int
     , algorithm : List Item -> SortOutput
+    , algorithmType : SortAlgorithm
     , animationInfo : AnimationInfo
+    , showAlgorithmInfo : Bool
     }
+
+
+type SortAlgorithm
+    = MergeSort
+    | QuickSort
+    | BubbleSort
+    | InsertionSort
 
 
 type alias Item =
