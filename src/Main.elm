@@ -54,6 +54,7 @@ init _ =
       , items = []
       , numItems = 100
       , algorithm = mergeSort
+      , showAlgorithmInfo = False
       }
     , Random.generate NewValues (listGenerator 100)
     )
@@ -200,6 +201,9 @@ update msg model =
                     { oldAppInfo | currentMenuSelection = menuOption }
             in
             ( { model | appInfo = newAppInfo }, Cmd.none )
+
+        ShowAlgorithmInfo show ->
+            ( { model | showAlgorithmInfo = show }, Cmd.none )
 
 
 subscriptions : Model -> Sub Msg
