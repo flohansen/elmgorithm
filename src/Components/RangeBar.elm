@@ -7,6 +7,7 @@ import Html.Attributes exposing (style, type_)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled
 import Material.Icons.Types exposing (Coloring(..))
+import Styles exposing (horiSpacing)
 import Types exposing (Model, Msg(..))
 
 
@@ -34,6 +35,7 @@ rangeBar model =
         , style "border-top-left-radius" "20px"
         , style "border-top-right-radius" "20px"
         , style "box-shadow" "0 0 24px rgba(0, 0, 0, 0.15)"
+        , style "align-items" "center"
         ]
         [ label [] [ Typography.label model.palette "Animation speed" ]
         , input
@@ -43,5 +45,6 @@ rangeBar model =
             , onInput ChangeAnimationSpeed
             ]
             []
+        , horiSpacing 48
         , Html.button (onClick (ShowAlgorithmInfo True) :: classHelpButton) [ Filled.help 24 (Color <| Color.rgb 255 255 255) ]
         ]

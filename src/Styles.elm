@@ -10,6 +10,11 @@ vertSpacing x =
     Html.div [ style "height" (String.fromInt x ++ "px") ] []
 
 
+horiSpacing : Int -> Html msg
+horiSpacing x =
+    Html.div [ style "width" (String.fromInt x ++ "px") ] []
+
+
 classApp : List (Html.Attribute msg)
 classApp =
     [ style "width" "100vw"
