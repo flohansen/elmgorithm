@@ -5,12 +5,8 @@ import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Palette exposing (Palette)
+import Styles exposing (vertSpacing)
 import Types exposing (Model, Msg(..), SortAlgorithm(..))
-
-
-vertSpacing : Int -> Html msg
-vertSpacing x =
-    Html.div [ style "height" (String.fromInt x ++ "px") ] []
 
 
 complexity : Palette -> String -> String -> Html Msg

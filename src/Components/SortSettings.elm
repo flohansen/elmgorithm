@@ -9,6 +9,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (style, value)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled
+import Styles exposing (vertSpacing)
 import Types exposing (AnimationState(..), Model, Msg(..))
 
 
@@ -41,6 +42,7 @@ sortSettings model =
     Html.div []
         [ startStopButton model
         , Typography.caption model.palette "Settings"
+        , vertSpacing 24
         , row
             [ Typography.label model.palette "Algorithm"
             , Html.select (onInput ChangeSortAlgo :: classRowData)

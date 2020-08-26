@@ -5,6 +5,11 @@ import Html.Attributes exposing (style)
 import Types exposing (Model)
 
 
+vertSpacing : Int -> Html msg
+vertSpacing x =
+    Html.div [ style "height" (String.fromInt x ++ "px") ] []
+
+
 classApp : List (Html.Attribute msg)
 classApp =
     [ style "width" "100vw"
