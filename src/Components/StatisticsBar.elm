@@ -31,13 +31,13 @@ statisticsBar model =
             , style "align-items" "center"
             ]
             [ dot "red"
-            , Typography.subheader model.palette "Verglichene Elemente"
+            , Typography.subheader model.palette "Compared elements"
             ]
         , Html.div
             [ style "display" "flex"
             , style "align-items" "center"
             ]
-            [ Typography.subheader model.palette "Vergleiche:"
+            [ Typography.subheader model.palette "Comparisons:"
             , model.animationInfo.comparisons |> String.fromInt |> Typography.subheader model.palette
             ]
         ]

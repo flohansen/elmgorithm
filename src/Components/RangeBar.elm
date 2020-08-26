@@ -23,7 +23,7 @@ rangeBar model =
         , style "border-top-right-radius" "20px"
         , style "box-shadow" "0 0 24px rgba(0, 0, 0, 0.15)"
         ]
-        [ label [] [ Typography.label model.palette "Animationsgeschwindigkeit" ]
+        [ label [] [ Typography.label model.palette "Animation speed" ]
         , input
             [ type_ "range"
             , Html.Attributes.min "0"
