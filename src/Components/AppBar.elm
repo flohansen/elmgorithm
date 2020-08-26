@@ -10,7 +10,7 @@ menuItemName : Menu -> String
 menuItemName m =
     case m of
         SortMenu ->
-            "Sortieralgorithmen"
+            "Sort algorithms"
 
 
 appBar : Model -> Html Msg

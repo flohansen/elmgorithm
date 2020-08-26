@@ -24,6 +24,6 @@ navigation model =
         ]
         [ Typography.header model.palette model.appInfo.name
         , menu
-            [ menuItem model.palette [ onClick (Navigate SortMenu) ] Filled.sort "Sortieralgorithmen"
+            [ menuItem model.palette [ onClick (Navigate SortMenu) ] Filled.sort "Sort algorithms"
             ]
         ]

@@ -40,9 +40,9 @@ sortSettings : Model -> Html Msg
 sortSettings model =
     Html.div []
         [ startStopButton model
-        , Typography.caption model.palette "Einstellungen"
+        , Typography.caption model.palette "Settings"
         , row
-            [ Typography.label model.palette "Algorithmus"
+            [ Typography.label model.palette "Algorithm"
             , Html.select (onInput ChangeSortAlgo :: classRowData)
                 [ dropDownItem model.palette "mergeSort" "Merge Sort"
                 , dropDownItem model.palette "bubbleSort" "Bubble Sort"
@@ -51,8 +51,8 @@ sortSettings model =
                 ]
             ]
         , row
-            [ Typography.label model.palette "Elemente"
+            [ Typography.label model.palette "Elements"
             , Html.input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
             ]
-        , button model.palette [ onClick GenValues ] "Neue Werte"
+        , button model.palette [ onClick GenValues ] "New elements"
         ]
