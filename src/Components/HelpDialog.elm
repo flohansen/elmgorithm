@@ -5,7 +5,7 @@ import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Palette exposing (Palette)
-import Types exposing (Model, Msg(..))
+import Types exposing (Model, Msg(..), SortAlgorithm(..))
 
 
 vertSpacing : Int -> Html msg
@@ -23,8 +23,66 @@ complexity palette str compl =
         ]
 
 
+algorithmName : SortAlgorithm -> String
+algorithmName algo =
+    case algo of
+        MergeSort ->
+            "Merge Sort"
+
+        QuickSort ->
+            "Quick Sort"
+
+        BubbleSort ->
+            "Bubble Sort"
+
+        InsertionSort ->
+            "Insertion Sort"
+
+
+algorithmDescription : SortAlgorithm -> String
+algorithmDescription algo =
+    case algo of
+        MergeSort ->
+            ""
+
+        QuickSort ->
+            ""
+
+        BubbleSort ->
+            ""
+
+        InsertionSort ->
+            ""
+
+
+algorithmComplexities : SortAlgorithm -> ( String, String, String )
+algorithmComplexities algo =
+    case algo of
+        MergeSort ->
+            ( "O(n log n)", "O(n log n)", "O(n log n)" )
+
+        QuickSort ->
+            ( "O(n²)", "O(n log n)", "O(n log n)" )
+
+        BubbleSort ->
+            ( "O(n²)", "O(n)", "O(n²)" )
+
+        InsertionSort ->
+            ( "O(n²)", "O(n)", "O(n²)" )
+
+
 helpDialog : Model -> Html Msg
 helpDialog model =
+    let
+        dialogTitle =
+            algorithmName model.algorithmType
+
+        dialogText =
+            algorithmDescription model.algorithmType
+
+        ( worstCase, bestCase, average ) =
+            algorithmComplexities model.algorithmType
+    in
     Html.div
         [ style "position" "absolute"
         , style "top" "0"
@@ -52,17 +110,17 @@ helpDialog model =
             , style "position" "relative"
             , style "z-index" "1"
             ]
-            [ Typography.cardHeader model.palette "Merge Sort"
+            [ Typography.cardHeader model.palette dialogTitle
             , vertSpacing 16
-            , Typography.body model.palette "First divide the list into the smallest unit (1 element), then compare each element with the adjacent list to sort and merge the two adjacent lists. Finally all the elements are sorted and merged."
+            , Typography.body model.palette dialogText
             , vertSpacing 32
             , Html.div
                 [ style "display" "flex"
                 , style "justify-content" "space-between"
                 ]
-                [ complexity model.palette "Worst case" "O(n log n)"
-                , complexity model.palette "Best case" "O(n log n)"
-                , complexity model.palette "Average" "O(n log n)"
+                [ complexity model.palette "Worst case" worstCase
+                , complexity model.palette "Best case" bestCase
+                , complexity model.palette "Average" average
                 ]
             ]
         ]
