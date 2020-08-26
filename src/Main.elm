@@ -36,8 +36,7 @@ listGenerator n =
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { appInfo =
-            { name = "Elmgorithm"
-            , drawerWidth = 320
+            { drawerWidth = 320
             , drawerSettingsWidth = 280
             , appBarHeight = 60
             , currentMenuSelection = SortMenu
@@ -51,6 +50,7 @@ init _ =
             , comparisons = 0
             }
       , palette = Palette.dark
+      , title = "Elmgorithm"
       , state = Stopped
       , items = []
       , numItems = 100
@@ -62,7 +62,7 @@ init _ =
     )
 
 
-view : Model -> Html Msg
+view : Model -> Browser.Document Msg
 view model =
     let
         elements =
@@ -85,7 +85,9 @@ view model =
             else
                 elements
     in
-    div classApp app
+    { title = model.title
+    , body = [ div classApp app ]
+    }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -229,7 +231,7 @@ subscriptions model =
 
 main : Program () Model Msg
 main =
-    Browser.element
+    Browser.document
         { init = init
         , subscriptions = subscriptions
         , view = view

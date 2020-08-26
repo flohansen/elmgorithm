@@ -22,7 +22,7 @@ navigation model =
         , style "box-sizing" "border-box"
         , style "padding" "24px"
         ]
-        [ Typography.header model.palette model.appInfo.name
+        [ Typography.header model.palette model.title
         , menu
             [ menuItem model.palette [ onClick (Navigate SortMenu) ] Filled.sort "Sort algorithms"
             ]

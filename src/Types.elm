@@ -39,8 +39,7 @@ type alias SortOutput =
 
 
 type alias AppInfo =
-    { name : String
-    , drawerWidth : Int
+    { drawerWidth : Int
     , drawerSettingsWidth : Int
     , appBarHeight : Int
     , currentMenuSelection : Menu
@@ -60,6 +59,7 @@ type alias AnimationInfo =
 type alias Model =
     { appInfo : AppInfo
     , palette : Palette
+    , title : String
     , state : AnimationState
     , items : List Item
     , numItems : Int
