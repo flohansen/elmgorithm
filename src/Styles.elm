@@ -1,7 +1,9 @@
 module Styles exposing (..)
 
+import Color
 import Html exposing (Html, p, text)
 import Html.Attributes exposing (style)
+import Palette exposing (Palette)
 import Types exposing (Model)
 
 
@@ -15,11 +17,11 @@ horiSpacing x =
     Html.div [ style "width" (String.fromInt x ++ "px") ] []
 
 
-classApp : List (Html.Attribute msg)
-classApp =
+classApp : Palette -> List (Html.Attribute msg)
+classApp palette =
     [ style "width" "100vw"
     , style "height" "100vh"
-    , style "background" "#121212"
+    , style "background" (Color.toCssString palette.background)
     ]
 
 

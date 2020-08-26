@@ -1,5 +1,6 @@
 module Components.HelpDialog exposing (helpDialog)
 
+import Color
 import Components.Typography as Typography
 import Html exposing (Html)
 import Html.Attributes exposing (style)
@@ -99,7 +100,7 @@ helpDialog model =
             ]
             []
         , Html.div
-            [ style "background" model.palette.backgroundCard
+            [ style "background" (Color.toCssString model.palette.backgroundCard)
             , style "padding" "24px"
             , style "border-radius" "15px"
             , style "max-width" "600px"

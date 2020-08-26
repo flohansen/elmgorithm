@@ -25,9 +25,9 @@ accessible visiting `http://localhost:8000/src/Main.elm`.
 ### Overview
 
 ### 1. Choose an algorithm 
-In the settings click the dropdown menu and select an algorithm. You can read more
-about the implementation and performance by clicking the question mark next to
-the input field.
+In the settings click the dropdown menu and select an algorithm. You can read
+more about the implementation and performance by clicking the question mark in
+the animation control panel.
 
 ### 2. Insert a number of elements
 In the settings select the input field labeled with 'Elements' and enter the

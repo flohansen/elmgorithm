@@ -26,7 +26,7 @@ menuItem p props icon str =
             [ Html.span
                 [ style "margin-right" "24px"
                 ]
-                [ icon 24 (Color <| Color.rgb 255 255 255)
+                [ icon 24 (Color <| p.secondary)
                 ]
             , Typography.body p str
             ]

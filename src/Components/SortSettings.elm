@@ -1,5 +1,6 @@
 module Components.SortSettings exposing (sortSettings)
 
+import Color
 import Components.Button exposing (button)
 import Components.DropDownItem exposing (dropDownItem)
 import Components.Fab exposing (fab)
@@ -13,12 +14,13 @@ import Styles exposing (vertSpacing)
 import Types exposing (AnimationState(..), Model, Msg(..))
 
 
-classRowData : List (Html.Attribute msg)
-classRowData =
+classRowData : Model -> List (Html.Attribute msg)
+classRowData model =
     [ style "flex-grow" "1"
     , style "min-width" "0"
     , style "border" "0"
-    , style "background" "rgba(255, 255, 255, 0.15)"
+    , style "background" (Color.toCssString model.palette.primary)
+    , style "opacity" "0.5"
     , style "border-radius" "3px"
     , style "padding" "5px 7px"
     , style "font-size" "14px"
@@ -31,21 +33,22 @@ startStopButton : Model -> Html Msg
 startStopButton model =
     case model.state of
         Running ->
-            fab model.palette [ onClick StopAnimation ] Filled.stop
+            fab model.palette 48 [ onClick StopAnimation ] Filled.stop
 
         Stopped ->
-            fab model.palette [ onClick StartAnimation ] Filled.play_arrow
+            fab model.palette 48 [ onClick StartAnimation ] Filled.play_arrow
 
 
 sortSettings : Model -> Html Msg
 sortSettings model =
     Html.div []
         [ startStopButton model
+        , vertSpacing 24
         , Typography.caption model.palette "Settings"
         , vertSpacing 24
         , row
             [ Typography.label model.palette "Algorithm"
-            , Html.select (onInput ChangeSortAlgo :: classRowData)
+            , Html.select (onInput ChangeSortAlgo :: classRowData model)
                 [ dropDownItem model.palette "mergeSort" "Merge Sort"
                 , dropDownItem model.palette "bubbleSort" "Bubble Sort"
                 , dropDownItem model.palette "quickSort" "Quick Sort"
@@ -54,7 +57,7 @@ sortSettings model =
             ]
         , row
             [ Typography.label model.palette "Elements"
-            , Html.input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData) []
+            , Html.input ([ value (String.fromInt model.numItems), onInput ChangeNumItems ] ++ classRowData model) []
             ]
         , button model.palette [ onClick GenValues ] "New elements"
         ]

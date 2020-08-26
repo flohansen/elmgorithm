@@ -27,7 +27,7 @@ rangeBar model =
         , style "position" "absolute"
         , style "bottom" "0"
         , style "left" "50%"
-        , style "background" "#272727"
+        , style "background" (Color.toCssString model.palette.backgroundCard)
         , style "color" "#eee"
         , style "transform" "translateX(-50%)"
         , style "box-sizing" "border-box"
@@ -46,5 +46,5 @@ rangeBar model =
             ]
             []
         , horiSpacing 48
-        , Html.button (onClick (ShowAlgorithmInfo True) :: classHelpButton) [ Filled.help 24 (Color <| Color.rgb 255 255 255) ]
+        , Html.button (onClick (ShowAlgorithmInfo True) :: classHelpButton) [ Filled.help 24 (Color <| model.palette.textPrimary) ]
         ]

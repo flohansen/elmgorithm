@@ -1,5 +1,6 @@
 module Components.DropDownItem exposing (dropDownItem)
 
+import Color
 import Html exposing (Html, text)
 import Html.Attributes exposing (style, value)
 import Palette exposing (Palette)
@@ -10,7 +11,7 @@ dropDownItem : Palette -> String -> String -> Html Msg
 dropDownItem p val str =
     Html.option
         [ value val
-        , style "background" p.background
+        , style "background" (Color.toCssString p.primary)
         ]
         [ text str
         ]

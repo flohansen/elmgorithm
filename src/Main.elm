@@ -86,7 +86,7 @@ view model =
                 elements
     in
     { title = model.title
-    , body = [ div classApp app ]
+    , body = [ div (classApp model.palette) app ]
     }
 
 
@@ -100,7 +100,7 @@ update msg model =
             ( model, Random.generate NewValues (listGenerator model.numItems) )
 
         NewValues values ->
-            ( { model | items = List.map (\x -> { value = x, color = "rgba(255, 255, 255, 0.15)", animation = "" }) values }, Cmd.none )
+            ( { model | items = List.map (\x -> { value = x, color = Color.toCssString model.palette.primary, animation = "" }) values }, Cmd.none )
 
         ChangeNumItems value ->
             let
@@ -218,6 +218,22 @@ update msg model =
 
         ShowAlgorithmInfo show ->
             ( { model | showAlgorithmInfo = show }, Cmd.none )
+
+        ToggleTheme ->
+            let
+                palette =
+                    if model.palette == Palette.dark then
+                        Palette.light
+
+                    else
+                        Palette.dark
+            in
+            ( { model
+                | palette = palette
+                , items = List.map (\i -> { i | color = Color.toCssString palette.primary }) model.items
+              }
+            , Cmd.none
+            )
 
 
 subscriptions : Model -> Sub Msg

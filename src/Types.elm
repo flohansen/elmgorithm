@@ -15,6 +15,7 @@ type Msg
     | ChangeSortAlgo String
     | ChangeAnimationSpeed String
     | ShowAlgorithmInfo Bool
+    | ToggleTheme
 
 
 type Menu

@@ -1,5 +1,6 @@
 module Components.Button exposing (button)
 
+import Color
 import Components.Typography as Typography
 import Html exposing (Html)
 import Html.Attributes exposing (style)
@@ -18,7 +19,7 @@ button p props str =
          , style "outline" "none"
          , style "cursor" "pointer"
          , style "color" "#fff"
-         , style "background" "#DC2865"
+         , style "background" (Color.toCssString p.primary)
          ]
             ++ props
         )

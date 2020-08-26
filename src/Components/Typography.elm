@@ -1,5 +1,6 @@
 module Components.Typography exposing (body, button, caption, cardHeader, code, header, label, subheader)
 
+import Color
 import Html exposing (Html, p, text)
 import Html.Attributes exposing (style)
 import Palette exposing (Palette)
@@ -18,7 +19,7 @@ classTypoHeader p =
     classTypo
         ++ [ style "font-weight" "700"
            , style "font-size" "20px"
-           , style "color" "#ffffff"
+           , style "color" (Color.toCssString p.textHighlight)
            ]
 
 
@@ -27,7 +28,7 @@ classTypoCardHeader p =
     classTypo
         ++ [ style "font-weight" "700"
            , style "font-size" "16px"
-           , style "color" "#ffffff"
+           , style "color" (Color.toCssString p.textPrimary)
            ]
 
 
@@ -36,7 +37,7 @@ classTypoBody p =
     classTypo
         ++ [ style "font-weight" "400"
            , style "font-size" "14px"
-           , style "color" "rgba(255, 255, 255, 0.6)"
+           , style "color" (Color.toCssString p.textSecondary)
            , style "line-height" "1.5em"
            ]
 
@@ -47,7 +48,7 @@ classTypoLabel p =
         ++ [ style "flex" "0 1 auto"
            , style "margin-right" "16px"
            , style "font-size" "16px"
-           , style "color" "#ffffff"
+           , style "color" (Color.toCssString p.textPrimary)
            , style "letter-spacing" "0.04em"
            ]
 
@@ -58,7 +59,7 @@ classTypoCode p =
         ++ [ style "flex" "0 1 auto"
            , style "margin-right" "16px"
            , style "font-size" "14px"
-           , style "color" "#ffffff"
+           , style "color" (Color.toCssString p.textPrimary)
            , style "letter-spacing" "0.04em"
            , style "font-family" "Courier New"
            ]
@@ -80,7 +81,7 @@ classTypoCaption p =
         ++ [ style "font-size" "10px"
            , style "letter-spacing" "0.15em"
            , style "text-transform" "uppercase"
-           , style "color" "rgba(255, 255, 255, 0.6)"
+           , style "color" (Color.toCssString p.textSecondary)
            ]
 
 
@@ -88,7 +89,7 @@ classTypoSubheader : Palette -> List (Html.Attribute msg)
 classTypoSubheader p =
     classTypo
         ++ [ style "font-size" "14px"
-           , style "color" "#A7A7A7"
+           , style "color" (Color.toCssString p.textSecondary)
            , style "margin-right" "8px"
            ]
 

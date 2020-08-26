@@ -1,5 +1,6 @@
 module Components.Drawer exposing (drawer)
 
+import Color
 import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Types exposing (Model, Msg)
@@ -10,7 +11,7 @@ drawer model elements =
     Html.div
         [ style "width" (String.fromInt model.appInfo.drawerSettingsWidth ++ "px")
         , style "height" "100vh"
-        , style "background" model.palette.backgroundCard
+        , style "background" (Color.toCssString model.palette.backgroundCard)
         , style "position" "fixed"
         , style "top" "0"
         , style "right" "0"
