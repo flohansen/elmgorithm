@@ -43,16 +43,16 @@ algorithmDescription : SortAlgorithm -> String
 algorithmDescription algo =
     case algo of
         MergeSort ->
-            ""
+            "Merge sort is a Divide and Conquer algorithm. First it divides the input array in two parts. Then the algorithm is executed for each of the two parts of the list. Here the recursion takes place. Now the algorithm merges the two sorted parts into one."
 
         QuickSort ->
-            ""
+            "Quick sort is a Divide and Conquer algorithm. First the algorithm picks the first element of the list, called the pivot. Then it goes over the rest of the list and compares every element with the pivot. If the value of the element is less than the pivot, it puts the element before the pivot. Otherwise it places it after the pivot. Then the algorithm will be executed with the two separated lists (before and after the pivot) until the initial list is sorted."
 
         BubbleSort ->
-            ""
+            "Bubble sort is one of the simplest sorting algorithm. Starting with the first element of the list, it compares always two adjacent elements. If the left element is greater than the right one, it swaps both elements. The algorithm will continue until the end is reached. After this step, the greatest element is at the end of the list. Next the algorithm will be executed using the previous sorted list as input. This will be repeated until no swap takes place."
 
         InsertionSort ->
-            ""
+            "The insertion sort algorithm starts with the first element of the list and puts it into the sorted output list. Then take the next element and compare it with each element of the sorted list. Shift all greater elements and insert the value. Repeat it until the input list is empty."
 
 
 algorithmComplexities : SortAlgorithm -> ( String, String, String )
