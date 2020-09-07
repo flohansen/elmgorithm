@@ -19,13 +19,14 @@ import Html.Attributes exposing (href, style, value)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled exposing (sort)
 import Material.Icons.Types exposing (Coloring(..))
+import Model exposing (Model)
 import Palette
 import Random
 import Sort exposing (animationFrames, bubbleSort, insertionSort, mergeSort, quickSort)
 import Styles exposing (..)
 import Time
 import Tuple exposing (second)
-import Types exposing (AnimationFrame, AnimationState(..), Item, Menu(..), Model, Msg(..), SortAlgorithm(..))
+import Types exposing (AnimationFrame, AnimationState(..), Item, Menu(..), Msg(..), SortAlgorithm(..))
 
 
 listGenerator : Int -> Random.Generator (List Float)
@@ -35,29 +36,7 @@ listGenerator n =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { appInfo =
-            { drawerWidth = 320
-            , drawerSettingsWidth = 280
-            , appBarHeight = 60
-            , currentMenuSelection = SortMenu
-            }
-      , animationInfo =
-            { speed = 16
-            , minSpeed = 200
-            , maxSpeed = 16
-            , numberFrames = 0
-            , animation = []
-            , comparisons = 0
-            }
-      , palette = Palette.dark
-      , title = "Elmgorithm"
-      , state = Stopped
-      , items = []
-      , numItems = 100
-      , algorithm = mergeSort
-      , algorithmType = MergeSort
-      , showAlgorithmInfo = False
-      }
+    ( Model.default
     , Random.generate NewValues (listGenerator 100)
     )
 

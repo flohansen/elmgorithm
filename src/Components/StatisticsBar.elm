@@ -3,7 +3,8 @@ module Components.StatisticsBar exposing (statisticsBar)
 import Components.Typography as Typography
 import Html exposing (Html)
 import Html.Attributes exposing (style)
-import Types exposing (Model, Msg)
+import Model exposing (Model)
+import Types exposing (Msg)
 
 
 dot : String -> Html Msg

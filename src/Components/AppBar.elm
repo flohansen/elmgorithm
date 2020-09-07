@@ -7,7 +7,8 @@ import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Material.Icons as Filled
-import Types exposing (Menu(..), Model, Msg(..))
+import Model exposing (Model)
+import Types exposing (Menu(..), Msg(..))
 
 
 menuItemName : Menu -> String

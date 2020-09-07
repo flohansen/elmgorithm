@@ -7,8 +7,9 @@ import Html.Attributes exposing (style, type_)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled
 import Material.Icons.Types exposing (Coloring(..))
+import Model exposing (Model)
 import Styles exposing (horiSpacing)
-import Types exposing (Model, Msg(..))
+import Types exposing (Msg(..))
 
 
 classHelpButton : List (Html.Attribute msg)

@@ -2,9 +2,10 @@ module Components.AnimationPreview exposing (animationPreview)
 
 import Html exposing (Html)
 import Html.Attributes exposing (style)
+import Model exposing (Model)
 import Svg exposing (Svg, rect, svg)
 import Svg.Attributes exposing (fill, height, viewBox, width, x, y)
-import Types exposing (Item, Model, Msg)
+import Types exposing (Item, Msg)
 
 
 itemsToSvg : List Item -> Float -> List (Svg msg)

@@ -57,20 +57,6 @@ type alias AnimationInfo =
     }
 
 
-type alias Model =
-    { appInfo : AppInfo
-    , palette : Palette
-    , title : String
-    , state : AnimationState
-    , items : List Item
-    , numItems : Int
-    , algorithm : List Item -> SortOutput
-    , algorithmType : SortAlgorithm
-    , animationInfo : AnimationInfo
-    , showAlgorithmInfo : Bool
-    }
-
-
 type SortAlgorithm
     = MergeSort
     | QuickSort

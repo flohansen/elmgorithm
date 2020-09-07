@@ -3,7 +3,8 @@ module Components.Drawer exposing (drawer)
 import Color
 import Html exposing (Html)
 import Html.Attributes exposing (style)
-import Types exposing (Model, Msg)
+import Model exposing (Model)
+import Types exposing (Msg)
 
 
 drawer : Model -> List (Html Msg) -> Html Msg

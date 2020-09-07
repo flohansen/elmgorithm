@@ -10,8 +10,9 @@ import Html exposing (Html)
 import Html.Attributes exposing (style, value)
 import Html.Events exposing (onClick, onInput)
 import Material.Icons as Filled
+import Model exposing (Model)
 import Styles exposing (vertSpacing)
-import Types exposing (AnimationState(..), Model, Msg(..))
+import Types exposing (AnimationState(..), Msg(..))
 
 
 classRowData : Model -> List (Html.Attribute msg)

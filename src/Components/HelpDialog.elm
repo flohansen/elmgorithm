@@ -5,9 +5,10 @@ import Components.Typography as Typography
 import Html exposing (Html)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
+import Model exposing (Model)
 import Palette exposing (Palette)
 import Styles exposing (vertSpacing)
-import Types exposing (Model, Msg(..), SortAlgorithm(..))
+import Types exposing (Msg(..), SortAlgorithm(..))
 
 
 complexity : Palette -> String -> String -> Html Msg

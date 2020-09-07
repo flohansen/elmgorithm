@@ -3,8 +3,8 @@ module Styles exposing (..)
 import Color
 import Html exposing (Html, p, text)
 import Html.Attributes exposing (style)
+import Model exposing (Model)
 import Palette exposing (Palette)
-import Types exposing (Model)
 
 
 vertSpacing : Int -> Html msg
