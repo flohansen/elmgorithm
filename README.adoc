@@ -31,13 +31,12 @@ accessible visiting `http://localhost:8000/src/Main.elm`.
 == How to use
 
 * *Choose an algorithm.*
-In settings click the dropdown menu and select an algorithm. 
+In settings click the dropdown menu labeled with _Algorithm_ and select an
+algorithm. 
 
-* *Get information about the running algorithm.* You can read
-more about the implementation and performance by clicking the question mark in
-the animation control panel at the bottom of the application.
-
-image::algo_info_button.png[Information about the Algorithm, margin-left="50px"]
+* *Get information about the running algorithm.*
+You can read more about the implementation and performance of the running
+algorithm by clicking the question mark in at the top of the application.
 
 * *Insert a number of elements.*
 In the settings select the input field labeled with _Elements_ and enter the
@@ -45,12 +44,14 @@ number of elements inside the list to be sorted. Be careful with the input
 value. Some algorithms may be very slow and the application could freeze.
 
 * *Generate random elements.*
-In settings you can generate a new list using the _New Values_ button.
+In settings you can generate a new list using the _New Values_ button. The
+number of elements are specified by the _Elements_ input field.
 
 * *Calculate and play the animation.*
 In settings you can start the calculation of the selected algorithm and play
-the animation using the play button.
+the animation using the play button inside the animation control panel at the
+bottom of the application.
 
 * *Watch the statistics and change the animation speed.*
 While the animation is running you can observe some statistical information
-on top of the animation display.
+on top of the app.
