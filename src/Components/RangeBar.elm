@@ -1,6 +1,7 @@
 module Components.RangeBar exposing (rangeBar)
 
 import Color
+import Components.Fab exposing (fab)
 import Components.Typography as Typography
 import Html exposing (Html, div, input, label, text)
 import Html.Attributes exposing (style, type_)
@@ -9,16 +10,17 @@ import Material.Icons as Filled
 import Material.Icons.Types exposing (Coloring(..))
 import Model exposing (Model)
 import Styles exposing (horiSpacing)
-import Types exposing (Msg(..))
+import Types exposing (AnimationState(..), Msg(..))
 
 
-classHelpButton : List (Html.Attribute msg)
-classHelpButton =
-    [ style "border" "none"
-    , style "background" "none"
-    , style "outline" "none"
-    , style "cursor" "pointer"
-    ]
+startStopButton : Model -> Html Msg
+startStopButton model =
+    case model.state of
+        Running ->
+            fab model.palette 36 [ onClick StopAnimation ] Filled.stop
+
+        Stopped ->
+            fab model.palette 36 [ onClick StartAnimation ] Filled.play_arrow
 
 
 rangeBar : Model -> Html Msg
@@ -47,5 +49,5 @@ rangeBar model =
             ]
             []
         , horiSpacing 48
-        , Html.button (onClick (ShowAlgorithmInfo True) :: classHelpButton) [ Filled.help 24 (Color <| model.palette.textPrimary) ]
+        , startStopButton model
         ]

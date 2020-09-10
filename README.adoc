@@ -1,4 +1,6 @@
 = Elmgorithm
+:imagesdir: ./img/
+
 Browser based visualization of sorting algorithms using [Elm](https://elm-lang.org/).
 
 == Visualized algorithms
@@ -10,7 +12,7 @@ All of the visualized algorithms are implemented recursivly.
 * Quick Sort
 
 == How to start
-I've created a GitHub page, which you can visit and play around.
+I've created a GitHub page that you can visit and play around with.
 
 https://kluddizz.github.io/elmgorithm
 
@@ -28,23 +30,27 @@ accessible visiting `http://localhost:8000/src/Main.elm`.
 
 == How to use
 
-. *Choose an algorithm.*
-In settings click the dropdown menu and select an algorithm. You can read
+* *Choose an algorithm.*
+In settings click the dropdown menu and select an algorithm. 
+
+* *Get information about the running algorithm.* You can read
 more about the implementation and performance by clicking the question mark in
 the animation control panel at the bottom of the application.
 
-. *Insert a number of elements.*
+image::algo_info_button.png[Information about the Algorithm, margin-left="50px"]
+
+* *Insert a number of elements.*
 In the settings select the input field labeled with _Elements_ and enter the
 number of elements inside the list to be sorted. Be careful with the input
 value. Some algorithms may be very slow and the application could freeze.
 
-. *Generate random elements.*
+* *Generate random elements.*
 In settings you can generate a new list using the _New Values_ button.
 
-. *Calculate and play the animation.*
+* *Calculate and play the animation.*
 In settings you can start the calculation of the selected algorithm and play
 the animation using the play button.
 
-. *Watch the statistics and change the animation speed.*
+* *Watch the statistics and change the animation speed.*
 While the animation is running you can observe some statistical information
 on top of the animation display.
