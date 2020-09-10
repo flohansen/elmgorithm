@@ -10,6 +10,11 @@ All of the visualized algorithms are implemented recursivly.
 * Quick Sort
 
 == How to start
+I've created a GitHub page, which you can visit and play around.
+
+https://kluddizz.github.io/elmgorithm
+
+== How to host on your own
 Elmgorithm was developed using the interactive development tool `elm-reactor`.
 You can download and start the app by executing the following commands.
 
