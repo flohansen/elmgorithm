@@ -3,8 +3,21 @@ module Components.StatisticsBar exposing (statisticsBar)
 import Components.Typography as Typography
 import Html exposing (Html)
 import Html.Attributes exposing (style)
+import Html.Events exposing (onClick)
+import Material.Icons as Filled
+import Material.Icons.Types exposing (Coloring(..))
 import Model exposing (Model)
-import Types exposing (Msg)
+import Styles exposing (horiSpacing)
+import Types exposing (Msg(..))
+
+
+classHelpButton : List (Html.Attribute msg)
+classHelpButton =
+    [ style "border" "none"
+    , style "background" "none"
+    , style "outline" "none"
+    , style "cursor" "pointer"
+    ]
 
 
 dot : String -> Html Msg
@@ -40,5 +53,7 @@ statisticsBar model =
             ]
             [ Typography.subheader model.palette "Comparisons:"
             , model.animationInfo.comparisons |> String.fromInt |> Typography.subheader model.palette
+            , horiSpacing 48
+            , Html.button (onClick (ShowAlgorithmInfo True) :: classHelpButton) [ Filled.help 24 (Color <| model.palette.textPrimary) ]
             ]
         ]

@@ -1,4 +1,6 @@
 = Elmgorithm
+:imagesdir: ./img/
+
 Browser based visualization of sorting algorithms using [Elm](https://elm-lang.org/).
 
 == Visualized algorithms
@@ -29,9 +31,13 @@ accessible visiting `http://localhost:8000/src/Main.elm`.
 == How to use
 
 * *Choose an algorithm.*
-In settings click the dropdown menu and select an algorithm. You can read
+In settings click the dropdown menu and select an algorithm. 
+
+* *Get information about the running algorithm.* You can read
 more about the implementation and performance by clicking the question mark in
 the animation control panel at the bottom of the application.
+
+image::algo_info_button.png[Information about the Algorithm, margin-left="50px"]
 
 * *Insert a number of elements.*
 In the settings select the input field labeled with _Elements_ and enter the

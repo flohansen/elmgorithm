@@ -3,16 +3,14 @@ module Components.SortSettings exposing (sortSettings)
 import Color
 import Components.Button exposing (button)
 import Components.DropDownItem exposing (dropDownItem)
-import Components.Fab exposing (fab)
 import Components.Row exposing (row)
 import Components.Typography as Typography
 import Html exposing (Html)
 import Html.Attributes exposing (style, value)
 import Html.Events exposing (onClick, onInput)
-import Material.Icons as Filled
 import Model exposing (Model)
 import Styles exposing (vertSpacing)
-import Types exposing (AnimationState(..), Msg(..))
+import Types exposing (Msg(..))
 
 
 classRowData : Model -> List (Html.Attribute msg)
@@ -30,22 +28,10 @@ classRowData model =
     ]
 
 
-startStopButton : Model -> Html Msg
-startStopButton model =
-    case model.state of
-        Running ->
-            fab model.palette 48 [ onClick StopAnimation ] Filled.stop
-
-        Stopped ->
-            fab model.palette 48 [ onClick StartAnimation ] Filled.play_arrow
-
-
 sortSettings : Model -> Html Msg
 sortSettings model =
     Html.div []
-        [ startStopButton model
-        , vertSpacing 24
-        , Typography.caption model.palette "Settings"
+        [ Typography.caption model.palette "Settings"
         , vertSpacing 24
         , row
             [ Typography.label model.palette "Algorithm"
