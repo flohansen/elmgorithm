@@ -10,7 +10,7 @@ All of the visualized algorithms are implemented recursivly.
 * Quick Sort
 
 == How to start
-I've created a GitHub page, which you can visit and play around.
+I've created a GitHub page that you can visit and play around with.
 
 https://kluddizz.github.io/elmgorithm
 
