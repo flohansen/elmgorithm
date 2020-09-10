@@ -1,7 +1,8 @@
 = Elmgorithm
 :imagesdir: ./img/
 
-Browser based visualization of sorting algorithms using [Elm](https://elm-lang.org/).
+Browser based visualization of sorting algorithms using
+https://elm-lang.org/[Elm].
 
 == Visualized algorithms
 All of the visualized algorithms are implemented recursivly.
